@@ -25,4 +25,17 @@ Criamos a estrutura do servidor, separando cada arquivo.
 
 ---
 
+Instalamos a dependência de desenvolvimento `nodemon`, que monitora as alterações nos arquivos e reinicia o servidor automaticamente. Configuramos a propriedade "script" no `package.json` para iniciar o arquivo `server.js` pelo nodemon através do comando `yarn dev` no terminal.
+
+```json
+// package.json
+{
+  // ...
+  "scripts": {
+    "dev": "nodemon src/server.js"
+  }
+  // ...
+}
+```
+
 ---
