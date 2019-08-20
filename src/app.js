@@ -1,5 +1,5 @@
-const express = require("express");
-const routes = require("./routes");
+import express from "express";
+import routes from "./routes";
 
 /**
  * Estrutura da aplicação
@@ -30,4 +30,4 @@ class App {
 }
 
 // exporta a propriedade server da instância de App
-module.exports = new App().server;
+export default new App().server;
