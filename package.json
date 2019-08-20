@@ -1,0 +1,11 @@
+{
+  "name": "rocketseat_02_node_gobarber",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/cafecomlucas/rocketseat_02_node_gobarber.git",
+  "author": "Lucas Soares <cafecomlucas@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
