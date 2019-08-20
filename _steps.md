@@ -138,4 +138,60 @@ O container que criamos pode ser utilizado por qualquer aplicação (e não por 
 
 ---
 
+Configuramos as ferramentas para manter um mesmo padrão de escrita de código (entre desenvolvedores diferentes).
+
+O ESLint faz o linting do código, ou seja, verifica se o código está seguindo alguns padrões.
+
+Instalamos a dependência de desenvolvimento ESLint.
+
+```
+yarn add eslint -D
+```
+
+Após instalação, criamos o arquivo de configuração (`.eslintrc.js`):
+
+```
+yarn eslint --init
+```
+
+Nas respostas das perguntas de configuração, selecionamos:
+
+- _How would you like to use ESLint?_
+  To check syntax, find problems, and enforce code style
+
+- _What type of modules your project use?_
+  JavaScript modules (import/export)
+
+- _Which framework does your project use?_
+  None of these
+
+- _Where does your code run?_
+  Node
+
+- _How would you like to define a style for your project?_
+  Use a popular style guide
+
+- _Which sytle guide do you to follow?_
+  Airbnb
+
+- _What format do you want your config file to be in?_
+  JavaScript
+
+- _Would you like to install them now with npm?_
+  Yes
+
+As instalações das dependências foram feitas pelo `npm` e o arquivo `package-lock.json` (cache do npm) foi criado. Como estamos utilizando o `yarn` deletamos esse arquivo e fizemos o mapeamento das novas dependências instaladas no `yarn.lock` através do comando:
+
+```
+yarn
+```
+
+Para o linting funcionar também é necessário instalar a extensão ESLint no editor VSCode. Após a instalação, ao abrir um arquivo `.js` o editor já indica alguns erros.
+
+Para que os erros detectados pelo ESLint sejam corrigidos automaticamente ao salvar o arquivo, nas configurações do editor (`settings.json`), setamos as variáveis `eslint.autoFixOnSave` e `eslint.validate` (com `autoFix: true`).
+
+Setamos algumas regras adicionais na propriedade `rules` do arquivo `.eslintrc.js` para que o ESLint não mostre erros em alguns casos.
+
+Ao abrir o arquivo `src/app.js` e salvar, alguns erros já foram corrigidos (como trocar aspas duplas por aspas simples e adicionar ponto e vírgula no final das linhas).
+
 ---
