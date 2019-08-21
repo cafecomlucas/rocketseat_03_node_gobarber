@@ -156,28 +156,28 @@ yarn eslint --init
 
 Nas respostas das perguntas de configuração, selecionamos:
 
-- **How would you like to use ESLint?**
+- **How would you like to use ESLint?**  
   To check syntax, find problems, and enforce code style
 
-- **What type of modules your project use?**
+- **What type of modules your project use?**  
   JavaScript modules (import/export)
 
-- **Which framework does your project use?**
+- **Which framework does your project use?**  
   None of these
 
-- **Where does your code run?**
+- **Where does your code run?**  
   Node
 
-- **How would you like to define a style for your project?**
+- **How would you like to define a style for your project?**  
   Use a popular style guide
 
-- **Which sytle guide do you to follow?**
+- **Which sytle guide do you to follow?**  
   Airbnb
 
-- **What format do you want your config file to be in?**
+- **What format do you want your config file to be in?**  
   JavaScript
 
-- **Would you like to install them now with npm?**
+- **Would you like to install them now with npm?**  
   Yes
 
 As instalações das dependências foram feitas pelo `npm` e o arquivo `package-lock.json` (cache do npm) foi criado. Como estamos utilizando o `yarn` deletamos esse arquivo e fizemos o mapeamento das novas dependências instaladas no `yarn.lock` através do comando:
@@ -285,5 +285,17 @@ yarn add pg pg-hstore
 No arquivo `src/config/database.js`, definimos as credenciais para acessar o banco de dados (dialect, host, username, password, database, timestamps, underscore).
 
 No arquivo `src/app.js` criei o método `database` para realizar um teste de conexão e exibir uma mensagem de sucesso ou fracasso no console.
+
+---
+
+Criação da Migration de usuários.
+
+Utilizamos o `sequelize-cli` para criar a tabela de usuários:
+
+```
+yarn sequelize migration:create --name=create-users
+```
+
+O arquivo `...-create-users.js` foi criado automaticamente na pasta `src/database/migrations` com o método `up`, para quando a Migration é executada e o método `down`, para quando precisamos reverter alterações (rollback).
 
 ---
