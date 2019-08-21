@@ -240,13 +240,13 @@ No Sequelize também podemos utilizar Seeds, que é uma maneira de popular a bas
 
 Utilizaremos a arquitetura MVC, que é uma maneira de estruturamos o nosso projeto e separarmos as responsabilidades de cada tipo de arquivo.
 
-**M - Model**
+**M - Model**  
 Armazena a abstração do banco de dados
 
-**C - Controller**
+**C - Controller**  
 Ponto de entrada das requisições e definição de grande parte das regras de negócio. Pode ou não utilizar os Models.
 
-**V - View**
+**V - View**  
 Retorno ao cliente, podendo ser HTML, ou, no caso de uma API REST, um objeto JSON
 
 ---
