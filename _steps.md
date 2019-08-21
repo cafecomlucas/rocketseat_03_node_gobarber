@@ -325,3 +325,9 @@ yarn sequelize db:migrate:undo:all
 ```
 
 ---
+
+Criação do Model de usuário.
+
+Criamos o arquivo `src/app/models/User.js`, que é reponsável por manipular os dados da tabela `users` do banco de dados (criar, alterar ou excluir). Dentro do arquivo definimos a classe `User`, que extende a classe `Model` do `sequelize`. Nessa classe indicamos as colunas que recebem informações do usuário do sistema e o tipo de dado de cada coluna.
+
+---
