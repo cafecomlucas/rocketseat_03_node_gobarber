@@ -223,3 +223,30 @@ A extensão EditorConfig do VSCode permite que o arquivo `.editorconfig` seja ge
 (Essa é apenas uma extensão pro editor, não é necessário instalar nenhum módulo do Node)
 
 ---
+
+ORM (Object-relational mapping) é uma forma de abstrairmos o banco de dados. Na arquitetura MVC (Model, View, Controller), por exemplo, uma tabela do banco chamada `users` vira um Model chamado `User.js`. Os dados são manipulados através de código JavaScript na maioria das vezes (ao invés de código SQL). Dessa maneira, conseguimos até mesmo utilizar um mesmo código JavaScript para diferentes bancos de dados (um SQL, outro Postgress por exemplo).
+
+O Sequelize é um ORM para lidar com banco de dados relacionais (como SQL, Postgress, SQLite).
+
+No Sequelize utilizamos a Migration, que é um controle de versão para a base de dados. Ela mantem a base de dados atualizada entre os desenvolvedores, tanto no ambiente de desenvolvimento quanto no ambiente de produção.
+
+Cada arquivo de Migration contém instruções para criação, alteração ou remoção de tabelas ou colunas. A ordenação de cada arquivo de migration ocorre por data. Cada migration serve para apenas uma tabela.
+
+Enquanto a migration está somente no ambiente local de um desenvolvedor, ela pode ser alterada e re-utilizada, porém, quando essa migration é compartilhada com outros desenvolvedores ou enviada para o ambiente de produção qualquer alteração não pode ser feita através dessa mesma migration, nesse caso, é necessário criar outra migration para fazer outras alterações.
+
+No Sequelize também podemos utilizar Seeds, que é uma maneira de popular a base de dados com informações fake pra visualizar o sistema funcionando ou para realizar testes automatizados. Os Seeds são executáveis apenas por código. Eles não são utilizados em produção, para esses casos, é melhor utilizar a Migration.
+
+---
+
+Utilizaremos a arquitetura MVC, que é uma maneira de estruturamos o nosso projeto e separarmos as responsabilidades de cada tipo de arquivo.
+
+_M - Model_
+Armazena a abstração do banco de dados
+
+_C - Controller_
+Ponto de entrada das requisições e definição de grande parte das regras de negócio. Pode ou não utilizar os Models.
+
+_V - View_
+Retorno ao cliente, podendo ser HTML, ou, no caso de uma API REST, um objeto JSON
+
+---
