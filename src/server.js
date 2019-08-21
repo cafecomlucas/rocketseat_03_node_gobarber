@@ -1,7 +1,7 @@
-import app from "./app";
+import app from './app';
 
 /**
  * Configuração do servidor
  */
 
-app.listen(3333, () => console.log("Server listening on port 3333..."));
+app.listen(3333, () => console.log('Server listening on port 3333...'));

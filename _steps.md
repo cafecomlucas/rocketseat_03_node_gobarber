@@ -142,7 +142,7 @@ Configuramos as ferramentas para manter um mesmo padrão de escrita de código (
 
 O ESLint faz o linting do código, ou seja, verifica se o código está seguindo alguns padrões.
 
-Instalamos a dependência de desenvolvimento ESLint.
+Instalamos a dependência de desenvolvimento ESLint:
 
 ```
 yarn add eslint -D
@@ -193,5 +193,25 @@ Para que os erros detectados pelo ESLint sejam corrigidos automaticamente ao sal
 Setamos algumas regras adicionais na propriedade `rules` do arquivo `.eslintrc.js` para que o ESLint não mostre erros em alguns casos.
 
 Ao abrir o arquivo `src/app.js` e salvar, alguns erros já foram corrigidos (como trocar aspas duplas por aspas simples e adicionar ponto e vírgula no final das linhas).
+
+---
+
+O módulo do Node Prettier faz a verificação de regras de código adicionais, como a formatação do código em uma ou mais linhas e o tipo de final de linha (lf ou crlf). É feito para deixar o código mais "bonito".
+
+Instalamos o Prettier e módulos complementares para poder integra-lo ao ESLInt:
+
+```
+yarn add prettier eslint-config-prettier eslint-plugin-prettier -D
+```
+
+Modificamos o arquivo `.eslintrc.js`, adicionando o `prettier` nas propriedes `extends`, `plugins` e `rules`.
+
+Ao acessar o arquivo `app.js` e salvar, o arquivo foi formatado com aspas duplas pois a regra do prettier sobrescreveu a regra do ESLint. Para corrigir criamos o arquivo de configuração do prettier (`.prettierrc`), nele indicamos a regra de aspas simples e a regra de ter vírgulas no último item de arrays/objetos.
+
+Corrigimos todos os arquivos através do comando:
+
+```
+yarn eslint --fix src --ext .js
+```
 
 ---
