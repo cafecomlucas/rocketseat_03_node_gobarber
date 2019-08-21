@@ -250,3 +250,40 @@ _V - View_
 Retorno ao cliente, podendo ser HTML, ou, no caso de uma API REST, um objeto JSON
 
 ---
+
+Instalamos a dependência `sequelize`.
+
+Instalamos a dependência de desenvolvimento `sequelize-cli`, que utilizaremos para criar migrations, executar migrations, criar Models, etc.
+
+Configuramos a estrutura da aplicação para poder utilizar o `sequelize`.
+
+```
+├── .sequelizerc
+│
+└─┬ src/
+  ├─┬ config/
+  │ └── database.js
+  │
+  ├─┬ database/
+  │ └── migrations/
+  │
+  └─┬ app/
+    ├── controllers/
+    └── models/
+```
+
+Em todos os arquivos utilizados para configurar o `sequelize` (`.sequelizerc` e `src/config/database.js`), utilizamos a sintaxe antiga de importação e exportação (`require`/`module.exports`) pois a nova forma de importação (`import`/`export`) não é suportada pelo `sequelize`.
+
+No arquivo `.sequelizerc` definimos os caminhos dos arquivos e pastas criadas.
+
+Antes de configurar as credenciais para acessar o banco de dados, para utilizar o dialeto `PostgreSQL`, de acordo com a documentação do `sequelize` é necessário adicionar algumas dependências:
+
+```
+yarn add pg pg-hstore
+```
+
+No arquivo `src/config/database.js`, definimos as credenciais para acessar o banco de dados (dialect, host, username, password, database, timestamps, underscore).
+
+No arquivo `src/app.js` criei o método `database` para realizar um teste de conexão e exibe uma mensagem de sucesso ou fracasso no console.
+
+---
