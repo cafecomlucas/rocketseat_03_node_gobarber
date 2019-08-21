@@ -298,4 +298,30 @@ yarn sequelize migration:create --name=create-users
 
 O arquivo `...-create-users.js` foi criado automaticamente na pasta `src/database/migrations` com o método `up`, para quando a Migration é executada e o método `down`, para quando precisamos reverter alterações (rollback).
 
+Modificamos o arquivo gerado, incluindo dentro do método `up` todos os campos do usuário, sendo que os campos `created_at`, `updated_at`, `id` e `provider` serão preenchidos automaticamente.
+
+(**Importante:** erros no preenchimento das propriedades desse arquivo podem causar o erro `Dialect needs to be explicitly supplied as of v4.0.0` ao executar a Migration.)
+
+Executamos a Migration (método `up`):
+
+```
+yarn sequelize db:migrate
+```
+
+Pela ferramenta Postbird verificamos que a tabela `users` foi criada com sucesso. Existe também uma tabela padrão chamada `SequelizeMeta` que armazena todas as migrations que o banco de dados já recebeu, assim o `sequelize` sabe quais migrations já foram executadas ou não.
+
+Antes de enviarmos a última Migration para produção ou compartilha-la com outros devs, ainda conseguimos reverter as últimas alterações nela através do comando:
+
+```
+yarn sequelize db:migrate:undo
+```
+
+Ao executar esse comando, a tabela `users` e a informação gravada na tabela `SequelizeMeta` desapareceram da base de dados. Foi apenas um teste, então executamos a Migrate novamente para que a tabela `users` exista.
+
+Caso necessário, também conseguimos reverter todas as Migrations executadas:
+
+```
+yarn sequelize db:migrate:undo:all
+```
+
 ---
