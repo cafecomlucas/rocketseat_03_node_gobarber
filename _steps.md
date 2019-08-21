@@ -156,28 +156,28 @@ yarn eslint --init
 
 Nas respostas das perguntas de configuração, selecionamos:
 
-- _How would you like to use ESLint?_
+- **How would you like to use ESLint?**
   To check syntax, find problems, and enforce code style
 
-- _What type of modules your project use?_
+- **What type of modules your project use?**
   JavaScript modules (import/export)
 
-- _Which framework does your project use?_
+- **Which framework does your project use?**
   None of these
 
-- _Where does your code run?_
+- **Where does your code run?**
   Node
 
-- _How would you like to define a style for your project?_
+- **How would you like to define a style for your project?**
   Use a popular style guide
 
-- _Which sytle guide do you to follow?_
+- **Which sytle guide do you to follow?**
   Airbnb
 
-- _What format do you want your config file to be in?_
+- **What format do you want your config file to be in?**
   JavaScript
 
-- _Would you like to install them now with npm?_
+- **Would you like to install them now with npm?**
   Yes
 
 As instalações das dependências foram feitas pelo `npm` e o arquivo `package-lock.json` (cache do npm) foi criado. Como estamos utilizando o `yarn` deletamos esse arquivo e fizemos o mapeamento das novas dependências instaladas no `yarn.lock` através do comando:
@@ -240,13 +240,13 @@ No Sequelize também podemos utilizar Seeds, que é uma maneira de popular a bas
 
 Utilizaremos a arquitetura MVC, que é uma maneira de estruturamos o nosso projeto e separarmos as responsabilidades de cada tipo de arquivo.
 
-_M - Model_
+**M - Model**
 Armazena a abstração do banco de dados
 
-_C - Controller_
+**C - Controller**
 Ponto de entrada das requisições e definição de grande parte das regras de negócio. Pode ou não utilizar os Models.
 
-_V - View_
+**V - View**
 Retorno ao cliente, podendo ser HTML, ou, no caso de uma API REST, um objeto JSON
 
 ---
@@ -284,6 +284,6 @@ yarn add pg pg-hstore
 
 No arquivo `src/config/database.js`, definimos as credenciais para acessar o banco de dados (dialect, host, username, password, database, timestamps, underscore).
 
-No arquivo `src/app.js` criei o método `database` para realizar um teste de conexão e exibe uma mensagem de sucesso ou fracasso no console.
+No arquivo `src/app.js` criei o método `database` para realizar um teste de conexão e exibir uma mensagem de sucesso ou fracasso no console.
 
 ---
