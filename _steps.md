@@ -140,7 +140,7 @@ O container que criamos pode ser utilizado por qualquer aplicação (e não por 
 
 Configuramos as ferramentas para manter um mesmo padrão de escrita de código (entre desenvolvedores diferentes).
 
-O ESLint faz o linting do código, ou seja, verifica se o código está seguindo alguns padrões.
+O módulo do Node ESLint faz o linting do código, ou seja, verifica se o código está seguindo alguns padrões.
 
 Instalamos a dependência de desenvolvimento ESLint:
 
@@ -206,6 +206,8 @@ yarn add prettier eslint-config-prettier eslint-plugin-prettier -D
 
 Modificamos o arquivo `.eslintrc.js`, adicionando o `prettier` nas propriedes `extends`, `plugins` e `rules`.
 
+Para o prettier funcionar também é necessário instalar a extensão Prettier no editor VSCode.
+
 Ao acessar o arquivo `app.js` e salvar, o arquivo foi formatado com aspas duplas pois a regra do prettier sobrescreveu a regra do ESLint. Para corrigir criamos o arquivo de configuração do prettier (`.prettierrc`), nele indicamos a regra de aspas simples e a regra de ter vírgulas no último item de arrays/objetos.
 
 Corrigimos todos os arquivos através do comando:
@@ -213,5 +215,11 @@ Corrigimos todos os arquivos através do comando:
 ```
 yarn eslint --fix src --ext .js
 ```
+
+---
+
+A extensão EditorConfig do VSCode permite que o arquivo `.editorconfig` seja gerado ao clicar com o botão direito na pasta de um projeto. Nesse arquivo são definidas regras adicionais (como espaçamento, indentação, charset, etc) para que desenvolvedores com diferentes editores de código tenham o mesmo tipo de formatação.
+
+(Essa é apenas uma extensão pro editor, não é necessário instalar nenhum módulo do Node)
 
 ---
