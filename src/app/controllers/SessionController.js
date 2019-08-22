@@ -17,26 +17,30 @@ class SessionController {
     // Se nenhum usuário com o email informado for encontrado
     if (!user) {
       // Retorna um erro
-      return res.status(400).json('User does not found.');
+      return res.status(401).json({ error: 'User does not found.' });
     }
-    // Caso o usuário exista, guarda o id e o nome
-    const { id, name } = user;
 
     // Confere a senha
-    if (await user.checkPassword(password)) {
-      // Caso a senha esteja correta, retorna os dados desse usuário
-      return res.json({
-        user: { id, name, email },
-
-        // Cria um novo Token JWT
-        // jwt.sign([Payload], [Chave única no mundo inteiro], [Validade do token])
-        token: jwt.sign({ id }, 'secret_myapp_unique-key-in-the-world', {
-          expiresIn: '7d',
-        }),
-      });
+    if (!(await user.checkPassword(password))) {
+      // Caso a senha esteja incorreta, retorna um erro
+      return res.status(401).json({ error: 'Password does not match' });
     }
-    // Caso a senha esteja incorreta, retorna um erro
-    return res.status(400).json('Incorrect password');
+
+    // Caso o usuário exista e a senha esteja correta
+
+    // Guarda o id e o nome do usuário
+    const { id, name } = user;
+
+    // Retorna os dados do usuário
+    return res.json({
+      user: { id, name, email },
+
+      // Cria um novo Token JWT
+      // jwt.sign([Payload], [Chave única no mundo inteiro], [Validade do token])
+      token: jwt.sign({ id }, 'secret_myapp_unique-key-in-the-world', {
+        expiresIn: '7d',
+      }),
+    });
   }
 }
 
