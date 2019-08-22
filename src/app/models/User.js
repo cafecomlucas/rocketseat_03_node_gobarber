@@ -3,7 +3,7 @@ import Sequelize, { Model } from 'sequelize';
 // cria a classe User como filha da classe Model
 class User extends Model {
   // método de inicialização (chamado automaticamente pelo sequelize)
-  static init(sequelize) {
+  static init(sequelizeConnection) {
     // chama o método init da classe pai (Model)
     super.init(
       {
@@ -16,10 +16,10 @@ class User extends Model {
         provider: Sequelize.BOOLEAN,
       },
       {
-        // necessário informar o objeto do sequelize
+        // necessário informar o objeto de conexão do sequelize
         // (também aceita outros objetos como o
         // `tableName` que muda o nome da tabela)
-        sequelize,
+        sequelize: sequelizeConnection,
       }
     );
   }

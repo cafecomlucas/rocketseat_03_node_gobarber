@@ -331,3 +331,17 @@ Criação do Model de usuário.
 Criamos o arquivo `src/app/models/User.js`, que é reponsável por manipular os dados da tabela `users` do banco de dados (criar, alterar ou excluir). Dentro do arquivo definimos a classe `User`, que extende a classe `Model` do `sequelize`. Nessa classe indicamos as colunas que recebem informações do usuário do sistema e o tipo de dado de cada coluna.
 
 ---
+
+Movemos a conexão com o banco de dados do `src/app.js` para um arquivo separado `src/database/index.js` e importamos esse novo arquivo para dentro do `src/app.js`.
+
+---
+
+Criando loader de models.
+
+Após fazer a conexão com o banco de dados no arquivo `src/database/index.js`, importamos e inicializamos todos os Models para que eles possam ser utilizados pela aplicação.
+
+Para testar, no arquivo `src/routes.js`, importamos o Model `User` e utilizamos ele para cadastrar um novo `user` no banco de dados quando a rota `/` é acessada.
+
+Ao acessar a rota `/`, no console foi retornada a Query executada, no navegador foi retornado o arquivo JSON com os dados de `user` e pelo Postbird também verificamos que os dados apareceram na tabela.
+
+---
