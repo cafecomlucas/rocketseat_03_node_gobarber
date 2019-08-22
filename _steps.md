@@ -406,4 +406,11 @@ No Insomnia, criamos uma nova requisição para essa nova rota e testamos.
 
 Movemos a verificação de senha para dentro do Model `User` pois não se trata de uma regra de negócio.
 
+Adicionamos o módulo `jwt` e utilizamos ele no `SessionController` para gerar um token, para isso informamos ao método `sign` o `Payload` (para uso posterior), a chave secreta (que deve ser única no mundo inteiro para essa aplicação) e em quanto tempo o token expira.
+
+Site para gerar chaves secretas com base em uma string:  
+[https://www.md5online.org/](https://www.md5online.org/)
+
+No Insomnia, testamos novamente e agora, além dos dados do usuário, também recebemos a string do Token JWT.
+
 ---

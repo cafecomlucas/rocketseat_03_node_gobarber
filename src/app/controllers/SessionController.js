@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
 // Classe que manipula dos dados da Sessão de User
@@ -27,6 +27,12 @@ class SessionController {
       // Caso a senha esteja correta, retorna os dados desse usuário
       return res.json({
         user: { id, name, email },
+
+        // Cria um novo Token JWT
+        // jwt.sign([Payload], [Chave única no mundo inteiro], [Validade do token])
+        token: jwt.sign({ id }, 'secret_myapp_unique-key-in-the-world', {
+          expiresIn: '7d',
+        }),
       });
     }
     // Caso a senha esteja incorreta, retorna um erro
