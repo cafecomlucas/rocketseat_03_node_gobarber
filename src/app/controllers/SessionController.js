@@ -22,9 +22,8 @@ class SessionController {
     // Caso o usuário exista, guarda o id e o nome
     const { id, name } = user;
 
-    // Verifica se a senha informada é igual a senha da base de dados
-    const checkPassword = await bcrypt.compare(password, user.password_hash);
-    if (checkPassword) {
+    // Confere a senha
+    if (await user.checkPassword(password)) {
       // Caso a senha esteja correta, retorna os dados desse usuário
       return res.json({
         user: { id, name, email },

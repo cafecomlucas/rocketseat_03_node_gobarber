@@ -42,6 +42,11 @@ class User extends Model {
     // retorna o próprio Model
     return this;
   }
+
+  // Verifica se a senha informada é igual a senha da base de dados
+  checkPassword(password) {
+    return bcrypt.compare(password, this.password_hash);
+  }
 }
 
 export default User;

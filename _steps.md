@@ -404,4 +404,6 @@ Criamos a rota `/sessions` do tipo `POST` e associamos a ela o método `store` d
 
 No Insomnia, criamos uma nova requisição para essa nova rota e testamos.
 
+Movemos a verificação de senha para dentro do Model `User` pois não se trata de uma regra de negócio.
+
 ---
