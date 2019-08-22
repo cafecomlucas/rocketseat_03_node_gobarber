@@ -413,4 +413,6 @@ Site para gerar chaves secretas com base em uma string:
 
 No Insomnia, testamos novamente e agora, além dos dados do usuário, também recebemos a string do Token JWT.
 
+Movemos os configurações da geração de Token JWT para um arquivo externo (`src/config/auth`).
+
 ---

@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
+import authConfig from '../../config/auth';
 
 // Classe que manipula dos dados da Sessão de User
 class SessionController {
@@ -37,8 +38,8 @@ class SessionController {
 
       // Cria um novo Token JWT
       // jwt.sign([Payload], [Chave única no mundo inteiro], [Validade do token])
-      token: jwt.sign({ id }, 'secret_myapp_unique-key-in-the-world', {
-        expiresIn: '7d',
+      token: jwt.sign({ id }, authConfig.secret, {
+        expiresIn: authConfig.expires,
       }),
     });
   }
