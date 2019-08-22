@@ -1,6 +1,6 @@
 import User from '../models/User';
 
-// Classe que controla a manipulação dos Models
+// Classe que controla a manipulação dos Models de User
 class UserController {
   // middleware a ser informado ao express, responsável pela criação de usuário
   async store(req, res) {

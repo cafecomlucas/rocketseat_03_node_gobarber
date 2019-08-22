@@ -389,3 +389,19 @@ O Token JWT é um conjunto de informações criptografadas divididas em 3 partes
 Após a criação de uma sessão e a geração desse Token JWT, a string do token é retornada pro usuário para que ele possa utiliza-la nas requisições de rotas restritas da aplicação, onde é necessário estar autenticado/logado.
 
 ---
+
+Autenticação de Usuário utilizando JWT.
+
+Para criar essa nova característica (feature) da aplicação, pensamos com qual tipo de entidade estamos lidando, e, como vamos criar uma nova sessão (e não um novo usuário), criamos o arquivo para lidar com essa nova entidade.
+
+Também lembramos que cada para cada entidade é necessário um Controller diferente e cada Controller é limitado a ter no máximo 5 métodos (index, show, store, update, delete).
+
+Portanto, como o método `store` do `UserController` já está sendo utilizado para criar um novo usuário, faz sentido criarmos um `SessionController` com o método `store` para criar uma sessão. Ou seja, apesar de utilizarmos o usuário para validar a autenticação e criar uma sessão, o que está sendo criado é uma sessão e não um usuário.
+
+Criamos o arquivo `src/app/SessionController.js`, e nele definimos o método `store`, que retorna os dados do usuário (id, name, email) caso o e-mail informado exista na base de dados e caso a senha esteja correta.
+
+Criamos a rota `/sessions` do tipo `POST` e associamos a ela o método `store` do Controller `SessionController`.
+
+No Insomnia, criamos uma nova requisição para essa nova rota e testamos.
+
+---
