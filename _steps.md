@@ -373,3 +373,19 @@ yarn add bcrypt
 No arquivo `UserController` importamos esse módulo, adicionamos um campo virtual chamado `password` (modificamos o envio no Insomnia também). Esse campo recebe a senha caso o usuário tenha preenchido. Antes de salvar no banco de dados, conseguimos alterar essa informação através dos `hooks`, que são funcionalidades do `sequelize` para executar trechos de código automaticamente com base em ações que acontecem no Model, como por exemplo: conseguimos utilizar o hook `beforeSave` para modificar a informação antes da ação de salvar. Dessa forma, caso o usuário preencha a senha, geramos o hash a partir desse dado e armazenamos na coluna `password_hash` do banco de dados.
 
 ---
+
+Conceito de JWT (Jason Web Token).
+
+JWT é uma forma de realizarmos autenticação em APIs RESTfull utilizando objetos JSON ao invés de Cookies de sessão (utilizados em aplicações MVC tradicionais com HTML nas Views).
+
+Por exemplo, após fazer a requisição para uma rota `POST` chamada `/sessions` para criar uma sessão, verificamos se os dados de `email` e `password` estão corretos (fazendo uma consulta ao banco de dados), e, se os dados estiverem corretos, geramos um Token JWT através do módulo `jwt`.
+
+O Token JWT é um conjunto de informações criptografadas divididas em 3 partes:
+
+- **Headers**: Tipo de token, qual o algoritimo de criptografia (usamos `JWT`, mas existem vários tipos)
+- **Payload**: Qualquer dado adicional (não sensíveis) que vamos precisar utilizar posteriormente (como o `id` do usuário, para saber qual usuário se autenticou)
+- **Assinatura**: Informação que garante que o token não foi modificado antes de ser enviado de volta pro servidor.
+
+Após a criação de uma sessão e a geração desse Token JWT, a string do token é retornada pro usuário para que ele possa utiliza-la nas requisições de rotas restritas da aplicação, onde é necessário estar autenticado/logado.
+
+---
