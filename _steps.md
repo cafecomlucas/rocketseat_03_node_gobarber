@@ -362,4 +362,14 @@ Muitas informações são retornadas após a criação de um usuário, por isso 
 
 ---
 
+Gerando hash da senha do Usuário.
+
+Para fazer a encriptação da senha, instalamos o módulo do Node chamado `bcrypt`:
+
+```
+yarn add bcrypt
+```
+
+No arquivo `UserController` importamos esse módulo, adicionamos um campo virtual chamado `password` (modificamos o envio no Insomnia também). Esse campo recebe a senha caso o usuário tenha preenchido. Antes de salvar no banco de dados, conseguimos alterar essa informação através dos `hooks`, que são funcionalidades do `sequelize` para executar trechos de código automaticamente com base em ações que acontecem no Model, como por exemplo: conseguimos utilizar o hook `beforeSave` para modificar a informação antes da ação de salvar. Dessa forma, caso o usuário preencha a senha, geramos o hash a partir desse dado e armazenamos na coluna `password_hash` do banco de dados.
+
 ---
