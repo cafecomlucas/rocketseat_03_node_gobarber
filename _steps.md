@@ -345,3 +345,21 @@ Para testar, no arquivo `src/routes.js`, importamos o Model `User` e utilizamos 
 Ao acessar a rota `/`, no console foi retornada a Query executada, no navegador foi retornado o arquivo JSON com os dados de `user` e pelo Postbird também verificamos que os dados apareceram na tabela.
 
 ---
+
+Definindo rota para criação de usuário. (Create/store)
+
+Criamos o arquivo `src/app/controllers/UserController.js`, onde definimos a classe `store`, responsável por criar um usuário com base nos dados recebidos no corpo da requisição via objeto JSON e por retornar o usuário criado.
+
+No arquivo de rotas (`src/routes.js`), removemos a rota de teste (`/`) e criamos uma nova rota de acesso via post para o cadastro de um novo usuário. Importamos o `UserController` e associamos a essa nova rota.
+
+Realizamos o teste através do Insomnia e cadastramos um novo usuário.
+
+---
+
+Ao tentar cadastrar um novo usuário com o mesmo e-mail, o servidor trava (pois é um campo único), por isso adicionamos no `UserController` um filtro para verificar se o email já existe antes de tentar realizar a criação de um novo usuário.
+
+Muitas informações são retornadas após a criação de um usuário, por isso também modificamos o `UserController` para retornar apenas as informações relevantes.
+
+---
+
+---
