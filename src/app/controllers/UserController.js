@@ -19,6 +19,11 @@ class UserController {
     // Retorna as informações relevantes do usuário criado
     return res.json({ id, name, email, provider });
   }
+
+  // middleware responsável pela atualização do usuário
+  async update(req, res) {
+    res.json({ ok: true });
+  }
 }
 
 export default new UserController();

@@ -17,4 +17,7 @@ routes.post('/users', UserController.store);
 // Rota para criar uma nova sessão de usuário
 routes.post('/sessions', SessionController.store);
 
+// Rota para atualizar um usuário
+routes.put('/users', UserController.update);
+
 export default routes;

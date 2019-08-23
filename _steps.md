@@ -416,3 +416,11 @@ No Insomnia, testamos novamente e agora, além dos dados do usuário, também re
 Movemos os configurações da geração de Token JWT para um arquivo externo (`src/config/auth`).
 
 ---
+
+Definição do middleware de autenticação.
+
+Algumas rotas só podem ser acessadas por usuários que estejam autenticados na aplicação, como por exemplo a rota de atualização de um usuário (ou seja, não deve ser possível atualizar um usuário sem estar autenticado). Por isso, temos que verificar se um usuário está autenticado em algumas rotas específicas, para isso utilizamos um `middleware`.
+
+No arquivo `src/routes.js` criamos a rota `/users` do tipo `PUT` e associamos ela ao método `UserController.update`. Essa rota será responsável por realizar a atualização de um usuário específico. Também criamos essa rota no Insomnia para testar se está funcionando.
+
+---
