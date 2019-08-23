@@ -440,3 +440,7 @@ No Insomnia, editamos o método `PUT`, informando o token que geramos anteriorme
 Enviamos a requisição `PUT` e recebemos o retorno do `id` do usuário.
 
 ---
+
+Modificamos a função assíncrona `jwt.verify` para utilizar o padrão `async`/`await`, ao invés de padrão antigo de `callback`. Fizemos isso através da função `promisify` do módulo `util` do node.
+
+---
