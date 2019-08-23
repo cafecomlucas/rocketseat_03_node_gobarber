@@ -22,7 +22,7 @@ class UserController {
 
   // middleware responsável pela atualização do usuário
   async update(req, res) {
-    res.json({ ok: true });
+    return res.json({ id: req.userId });
   }
 }
 

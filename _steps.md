@@ -419,8 +419,24 @@ Movemos os configurações da geração de Token JWT para um arquivo externo (`s
 
 Definição do middleware de autenticação.
 
-Algumas rotas só podem ser acessadas por usuários que estejam autenticados na aplicação, como por exemplo a rota de atualização de um usuário (ou seja, não deve ser possível atualizar um usuário sem estar autenticado). Por isso, temos que verificar se um usuário está autenticado em algumas rotas específicas, para isso utilizamos um `middleware`.
+Algumas rotas são restritas apenas para usuários que estejam logados na aplicação, como por exemplo a rota de atualização de um usuário (ou seja, não deve ser possível atualizar um usuário sem estar autenticado). Por isso, temos que verificar se um usuário está logado em algumas rotas específicas, para isso utilizamos um `middleware`.
 
 No arquivo `src/routes.js` criamos a rota `/users` do tipo `PUT` e associamos ela ao método `UserController.update`. Essa rota será responsável por realizar a atualização de um usuário específico. Também criamos essa rota no Insomnia para testar se está funcionando.
+
+Criamos o arquivo `src/app/middlewares/auth.js` para verificar o token informado pelo cliente e só deixar o fluxo prosseguir normalmente se o token for válido. Se o token for inválido ou se não for informado é retornado um erro.
+
+Quando o token é válido e decodificado com sucesso, os dados retornados em um objeto são:
+
+- `id`: o valor do id que definimos quando o token foi criado
+- `iat`: issued at, quando o token foi criado
+- `exp`: expiration, timestamp de quando o token irá expirar
+
+Editamos o arquivo `src/routes.js`, adicionando o middleware de autenticação (`authMiddleware`).
+
+Editamos o `UserController` para retornar pro usuário o `id` que esta na variável `req.userId` (preenchido pelo middleware `authMiddleware` após a decodificação do token).
+
+No Insomnia, editamos o método `PUT`, informando o token que geramos anteriormente. O Token pode ser informado tanto na segunda aba (de autenticação), selecionando a opção 'Bearer Token' e preenchendo o campo 'TOKEN' somente com a string do token (sem o `Bearer`), quanto na aba `Header`, preenchendo o campo `Header` com o texto `Authorization` e o campo `value` com a string `Bearer ...token...`. O `Bearer` é um padrão utilizado nesse tipo de autenticação (`JWT`).
+
+Enviamos a requisição `PUT` e recebemos o retorno do `id` do usuário.
 
 ---
