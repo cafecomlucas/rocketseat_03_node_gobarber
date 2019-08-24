@@ -456,3 +456,9 @@ Após essa primeira checagem, modificamos o `UserController` para buscar o `user
 Caso o fluxo passe por todas as condições, o usuário é atualizado através do método `update` e as informações são retornadas para o cliente.
 
 ---
+
+Instalamos o módulo Yup, que faz um Schema validation - uma maneira de validar os campos recebidos no corpo da requisição.
+
+Alteramos o `SessionController`, importando o `Yup` e adicionando a validação dos campos `email` e `senha`. Caso a validação funcione, retornamos um erro pro cliente.
+
+---

@@ -1,10 +1,24 @@
 import jwt from 'jsonwebtoken';
+// Importamos tudo (*) pois o Yup não tem um export default
+import * as Yup from 'yup';
+
 import User from '../models/User';
 import authConfig from '../../config/auth';
 
 // Classe que manipula dos dados da Sessão de User
 class SessionController {
   async store(req, res) {
+    const schema = Yup.object().shape({
+      email: Yup.string()
+        .email()
+        .required(),
+      password: Yup.string().required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
     // Guarda as informações email e senha do corpo da requisição
     const { email, password } = req.body;
 
