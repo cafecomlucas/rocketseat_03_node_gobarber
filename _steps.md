@@ -467,6 +467,12 @@ Testamos as alterações no Insomnia.
 
 Alteramos o `UserController.store`, importando o `Yup`. 
 
-Adicionamos a validação dos campos `name`, `email` e `senha`. Caso a validação funcione, retornamos um erro pro cliente.
+Adicionamos a validação dos campos `name`, `email` e `password` via Yup. Caso a validação do Yup não funcione, retornamos um erro pro cliente.
+
+Alteramos o `UserController.update`.
+
+Adicionamos a validação dos campos `name`, `email`, `oldPassword`, `password` e `confirmPassword` via Yup. Validação do campo `oldPassword` feita anteriormente via `if` foi removida (campo obrigatório, quando `password` for preenchido). No trecho que checa a senha no banco de dados, também incluímos no `if` a verificação da variável `password`, pois, se o cliente preencher somente a variável `oldPassword` (e não preencher a `password`), não é necessário fazer essa verificação já que a senha não será modificada (já que o campo `password` estará vazio nesse caso).
+
+Caso a validação do Yup não funcione, retornamos um erro pro cliente.
 
 Testamos as alterações no Insomnia.
