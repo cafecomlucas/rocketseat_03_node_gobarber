@@ -444,3 +444,15 @@ Enviamos a requisição `PUT` e recebemos o retorno do `id` do usuário.
 Modificamos a função assíncrona `jwt.verify` para utilizar o padrão `async`/`await`, ao invés de padrão antigo de `callback`. Fizemos isso através da função `promisify` do módulo `util` do node.
 
 ---
+
+Modificamos o `UserController` para, no caso de atualização de senha, realizar uma verificação antes de qualquer busca de dados no banco. Caso o `password` seja preenchido, verificamos se o `oldPassword` está preenchido (os dois dados são necessários) e, em caso negativo, paramos o fluxo e retornamos um erro de senha obrigatória.
+
+Após essa primeira checagem, modificamos o `UserController` para buscar o `user` no banco de dados com base no `id` decodificado do token. Utilizamos essas informações para:
+
+- No caso de atualização de e-mail, conferir se o e-mail digitado é diferente do e-mail cadastrado e, se for, também conferir se não existe outro usuário cadastrado com esse e-mail através do método `findOne`
+
+- No caso de atualização de senha, conferimos se a senha anterior é igual a senha do banco de dados através do método `checkPassword`
+
+Caso o fluxo passe por todas as condições, o usuário é atualizado através do método `update` e as informações são retornadas para o cliente.
+
+---
