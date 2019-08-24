@@ -8,13 +8,14 @@ import authConfig from '../../config/auth';
 // Classe que manipula dos dados da Sessão de User
 class SessionController {
   async store(req, res) {
+    // cria o schema de validação dos campos
     const schema = Yup.object().shape({
       email: Yup.string()
         .email()
         .required(),
       password: Yup.string().required(),
     });
-
+    // valida os campos
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }

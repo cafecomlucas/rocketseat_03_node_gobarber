@@ -1,9 +1,30 @@
+// Importamos tudo (*) pois o Yup não tem um export default
+import * as Yup from 'yup';
+
 import User from '../models/User';
 
 // Classe que controla a manipulação dos Models de User
 class UserController {
   // middleware a ser informado ao express, responsável pela criação de usuário
   async store(req, res) {
+    // cria o schema de validação dos campos de um objeto (req.body)
+    const schema = Yup.object().shape({
+      // campo do tipo string, obrigatório
+      name: Yup.string().required(),
+      // campo do tipo string, no formato e-mail, obrigatório
+      email: Yup.string()
+        .email()
+        .required(),
+      // campo do tipo string, com no mínimo 6 caracteres, obrigatório
+      password: Yup.string()
+        .required()
+        .min(6),
+    });
+    // valida os campos
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'Validation fails' });
+    }
+
     // verifica se o e-mail já está cadastrado na base de dados
     const emailExists = await User.findOne({
       where: { email: req.body.email },

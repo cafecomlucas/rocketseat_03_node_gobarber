@@ -461,4 +461,12 @@ Instalamos o módulo Yup, que faz um Schema validation - uma maneira de validar 
 
 Alteramos o `SessionController`, importando o `Yup` e adicionando a validação dos campos `email` e `senha`. Caso a validação funcione, retornamos um erro pro cliente.
 
+Testamos as alterações no Insomnia.
+
 ---
+
+Alteramos o `UserController.store`, importando o `Yup`. 
+
+Adicionamos a validação dos campos `name`, `email` e `senha`. Caso a validação funcione, retornamos um erro pro cliente.
+
+Testamos as alterações no Insomnia.
