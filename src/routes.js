@@ -1,11 +1,13 @@
 import { Router } from 'express';
 import multer from 'multer';
-import multerConfig from './config/multer'
+import multerConfig from './config/multer';
 
 // importa o Controller de User
 import UserController from './app/controllers/UserController';
 // importa o Controller de Session
 import SessionController from './app/controllers/SessionController';
+// importa o Controller de Arquivo
+import FileController from './app/controllers/FileController';
 
 // importa o middleware de autenticação
 import authMiddleware from './app/middlewares/auth';
@@ -36,7 +38,7 @@ routes.put('/users', UserController.update);
 const upload = multer(multerConfig);
 
 // Rota para upload de um arquivo
-// Define como middleware o método do multer para upload de um único arquivo 
-routes.post('/files', upload.single('file'), (req, res) => res.json({ ok: true }));
+// Define como middleware o método do multer para upload de um único arquivo
+routes.post('/files', upload.single('file'), FileController.store);
 
 export default routes;

@@ -106,10 +106,10 @@ class UserController {
 
     // caso passe pelas condições acima,
     // atualiza o usuário com as infos recebidas via req.body
-    const { id, name, provider } = await user.update(req.body);
+    const { id, name, provider, avatar_id } = await user.update(req.body);
 
     // retorna os dados atualizados
-    return res.json({ id, name, email, provider });
+    return res.json({ id, name, email, provider, avatar_id });
   }
 }
 

@@ -43,6 +43,10 @@ class User extends Model {
     return this;
   }
 
+  static associate(models) {
+    this.belongsTo(models.File, { foreignKey: 'avatar_id' });
+  }
+
   // Verifica se a senha informada é igual a senha da base de dados
   checkPassword(password) {
     return bcrypt.compare(password, this.password_hash);

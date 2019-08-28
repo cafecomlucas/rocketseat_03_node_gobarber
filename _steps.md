@@ -483,6 +483,19 @@ Testamos as alterações no Insomnia.
 
 ---
 
+## Início da Parte 02
+
+Servidor da aplicação iniciado:
+```
+yarn dev
+```
+
+Servidor do banco de dados iniciado (através do Docker):
+```
+docker-machine start && docker-machine env && docker start dtbase
+```
+---
+
 ## Implementando o upload de arquivos
 
 Na nossa aplicação os provedores de serviço poderão ter uma foto de avatar, por isso será necessário implementar o upload de arquivos.
@@ -519,5 +532,61 @@ Após realizar essa primeira configuração, alteramos o arquivo `src/routes.js`
 Na rota criada, antes de retornar uma resposta pro cliente, definimos o middleware `single('file')` do objeto `multer` que receberá o upload de um único arquivo no campo `file`.
 
 No Insomnia, criamos uma nova requisição do tipo `POST` apontando para a rota `/files`. No tipo de dado enviado selecionamos `Multiparm Form`, definimos o nome do campo como `file` e selecionamos um arquivo para upload. Na aba "Auth", inserimos o `token` do usuário, pois será necessário estar logado para definir uma foto pro avatar. Enviamos a requisição, recebemos a resposta e o arquivo de imagem foi criado na pasta `tmp/uploads`.
+
+---
+
+Para que os uploads tenham utilidade, é preciso associar o arquivo criado ao usuário que fez o upload do arquivo. Para isso, é necessário existir uma tabela `files` para registrar cada arquivo criado, e também, é necessário um campo `avatar_id` (chave estrangeira) na tabela `users` que guarda um `id` específico da tabela `files` para fazer a associação/relacionamento.
+
+## Registro de um Arquivo (Avatar) no BD 
+
+Criamos a migration de arquivos:
+```
+yarn sequelize migration:create --name=create-files
+```
+
+Modificamos a migration (usando o arquivo `create-users` como exemplo) e os campos definidos foram `id`, `name` (nome original do arquivo), `path` (nome do arquivo salvo na pasta `tmp/uploads`).
+
+Com os campos definidos, executamos a migration para criar a tabela no banco de dados:
+```
+yarn sequelize db:migrate
+```
+
+Vimos a tabela `files` criada no Postbird (sem nenhum conteúdo por enquanto).
+
+Com a tabela `files` criada, definimos o Model dessa tabela no arquivo `src/app/models/File.js` com os campos `name` e `path`.
+
+Alteramos o arquivo `src/database/index.js` para importar o novo Model de Arquivo (`File`).
+
+Criamos o Controller `FileController`, importamos o model `File`, criamos o método `store`, e nele, utilizando as informações que são preenchidas pelo middleware `upload.single` após o upload de um arquivo, criamos um novo registro na tabala `file` com o nome original do arquivo (`name`) e o nome do arquivo salvo (`path`) e retornamos esses dados pro cliente.
+
+Modificamos o arquivo `src/routes.js` para utilizar o método `FileController.store`.
+
+No Insomnia, criamos um novo arquivo através da rota `/files` (POST), e vimos o registro desse arquivo no Postbird, o `id` desse registro poderá ser utilizado na atualização de um usuário. 
+
+---
+
+## Relacionamento entre tabelas de Usuário e Arquivo (Avatar)
+
+Para associar os registros da tabela `files` a um usuário específico, é necessário criar uma nova coluna na tabela `users` para armazenar a chave estrangeira. Poderíamos editar a migration `users`, mas como cronologicamente a tabela `files` foi criada depois da tabela `users` e o novo campo vai precisar ter a referência da tabela `files`, não faz sentido desfazer todas as Migrations agora. A melhor abordagem nesse caso é definir uma nova Migration apenas para a criação dessa nova coluna.
+
+```
+yarn sequelize migration:create --name=add-avatar-field-to-users
+```
+
+Alteramos essa Migration para adicionar a coluna `avatar_id` dentro da tabela `users` utilizando como referência o campo `id` da tabela `files`. O campo também é alterado automaticamente quando alteramos o registro da tabela `files` (`CASCADE`) e definido como nulo se o registro da tabela `files` for deletado.
+
+Após definição das regras da nova coluna, executamos a Migration:
+```
+yarn sequelize db:migrate
+```
+Ao acessar a tabela via Postbird, vimos que todos os registros de `users` agora possuem um campo `avatar_id` definido como nulo.
+
+Com a nova coluna criada na tabela `users`, também alteramos o Model `User` para que essa associação seja feita: para isso criamos um método chamado `associate`, e nele chamamos o método `belongsTo` do Model `User` para associar o campo `avatar_id` do Model `User` ao Model `File` como uma chave estrangeira.
+
+Alteramos o arquivo `src/database/index.js` para executar o método `associate` quando ele existir.
+
+Modifiquei o `UserController.update` para também retornar o `avatar_id` pro cliente após a atualização dos dados.
+
+No Insomnia, modificamos um usuário através da rota `/users` (PUT) informando o `id` do arquivo no novo campo `avatar_id` e vimos no Postbird que o registro foi alterado.
 
 ---
