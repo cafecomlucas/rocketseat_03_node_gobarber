@@ -590,3 +590,9 @@ Modifiquei o `UserController.update` para também retornar o `avatar_id` pro cli
 No Insomnia, modificamos um usuário através da rota `/users` (PUT) informando o `id` do arquivo no novo campo `avatar_id` e vimos no Postbird que o registro foi alterado.
 
 ---
+
+## Definição da rota estática para entrega das imagens (avatares) dos usuários
+
+No arquivo `src/app.js` definimos uma rota estática `/files` para que o cliente possa acessar as imagens da pasta `tmp/uploads` via URL.
+
+---

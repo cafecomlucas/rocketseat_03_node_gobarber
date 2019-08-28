@@ -1,4 +1,5 @@
 import express from 'express';
+import { resolve } from 'path';
 import routes from './routes';
 
 // conecta a base de dados
@@ -24,6 +25,11 @@ class App {
   middlewares() {
     // middleware para receber requisições no formato JSON
     this.server.use(express.json());
+    // Define rota de acesso aos arquivos estáticos (avatares dos usuários)
+    this.server.use(
+      '/files',
+      express.static(resolve(__dirname, '..', 'tmp', 'uploads'))
+    );
   }
 
   // método com a configuração de todas as rotas
