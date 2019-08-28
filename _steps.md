@@ -596,3 +596,15 @@ No Insomnia, modificamos um usuário através da rota `/users` (PUT) informando 
 No arquivo `src/app.js` definimos uma rota estática `/files` para que o cliente possa acessar as imagens da pasta `tmp/uploads` via URL.
 
 ---
+
+## Definição da rota que busca todos os Usuários Provedores 
+
+Sabendo que o `Provider` é um tipo de entidade (que é um tipo `User` específico), criamos o arquivo `ProviderController`, responsável por lidar apenas com esse tipo de entidade.
+
+No arquivo criado, criamos o método `index`, onde buscamos apenas por usuários que possuem o atributo `provider: true` e editamos o resultado para retornar apenas o `id`, `name`, `e-mail` e `avatar_id` de cada Provedor.
+
+Em `src/routes` definimos a nova rota `/providers` do tipo `GET` e associamos ao método `index` do `ProviderController`.
+
+No Insomnia, criamos uma nova requisição para `/providers` do tipo `GET`, definimos o `token` na aba `Auth` (é necessário estar logado) e testamos. O retorno foi um Array com objetos de cada Usuário que é um Provedor.
+
+---

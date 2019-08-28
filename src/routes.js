@@ -8,6 +8,8 @@ import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 // importa o Controller de Arquivo
 import FileController from './app/controllers/FileController';
+// importa o Controller de Provider (que também é User)
+import ProviderController from './app/controllers/ProviderController';
 
 // importa o middleware de autenticação
 import authMiddleware from './app/middlewares/auth';
@@ -33,6 +35,8 @@ routes.put('/users', UserController.update);
 // caso auth fosse um middleware local,
 // seria definido na própria chamada do método put:
 // routes.put('/users', authMiddleware, UserController.update);
+
+routes.get('/providers', ProviderController.index);
 
 // Inicializa o multer
 const upload = multer(multerConfig);
