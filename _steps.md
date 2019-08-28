@@ -608,3 +608,17 @@ Em `src/routes` definimos a nova rota `/providers` do tipo `GET` e associamos ao
 No Insomnia, criamos uma nova requisição para `/providers` do tipo `GET`, definimos o `token` na aba `Auth` (é necessário estar logado) e testamos. O retorno foi um Array com objetos de cada Usuário que é um Provedor.
 
 ---
+
+## Modificando rota que retorna todos os provedores para também informar os dados do Arquivo relacionado
+
+No Model `File`, adicionamos um campo virtual que retorna a informação da URL completa para uso no Front-End.
+
+No `ProviderController`, editamos o método `index`, incluindo o Model `File` e os campos a serem retornados.
+
+No Model `User`, definimos o alias `avatar`, para o retorno vir dentro de uma propriedade com o nome `avatar` ao invés do nome `File`.
+
+Em `ProviderController` também definimos o alias `avatar`.
+
+Testamos as modificações no Insomnia e as informações do Arquivo relacionado ao Provedor também foi retornada, incluindo o `name`, o `path` e a `url`.
+
+---
