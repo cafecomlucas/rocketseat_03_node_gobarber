@@ -58,6 +58,8 @@ Fizemos as alterações em todos os arquivos JavaScript para a nova sintaxe de i
 
 ---
 
+## Docker
+
 O Docker é uma ferramenta para controlar os serviços externos da nossa aplicação (envio de e-mail, base de dados, etc). Ele cria ambientes isolados para a utilização desses serviços. Esses ambientes são conhecidos como containers. Os containers funcionam como sub-sistemas para que os serviços não alterem arquivos ou configurações do nosso sistema primário. Para se comunicar, os containers expõem portas de comunicação (mongodb costuma usar a porta `:27017` e postgres a porta `:5432`).
 
 Conceitos do Docker:
@@ -224,7 +226,9 @@ A extensão EditorConfig do VSCode permite que o arquivo `.editorconfig` seja ge
 
 ---
 
-ORM (Object-relational mapping) é uma forma de abstrairmos o banco de dados. Na arquitetura MVC (Model, View, Controller), por exemplo, uma tabela do banco chamada `users` vira um Model chamado `User.js`. Os dados são manipulados através de código JavaScript na maioria das vezes (ao invés de código SQL). Dessa maneira, conseguimos até mesmo utilizar um mesmo código JavaScript para diferentes bancos de dados (um SQL, outro Postgress por exemplo).
+## Object relational mapping
+
+ORM (Object relational mapping) é uma forma de abstrairmos o banco de dados. Na arquitetura MVC (Model, View, Controller), por exemplo, uma tabela do banco chamada `users` vira um Model chamado `User.js`. Os dados são manipulados através de código JavaScript na maioria das vezes (ao invés de código SQL). Dessa maneira, conseguimos até mesmo utilizar um mesmo código JavaScript para diferentes bancos de dados (um SQL, outro Postgress por exemplo).
 
 O Sequelize é um ORM para lidar com banco de dados relacionais (como SQL, Postgress, SQLite).
 
@@ -288,7 +292,7 @@ No arquivo `src/app.js` criei o método `database` para realizar um teste de con
 
 ---
 
-Criação da Migration de usuários.
+## Criação da Migration de usuários
 
 Utilizamos o `sequelize-cli` para criar a tabela de usuários:
 
@@ -326,7 +330,7 @@ yarn sequelize db:migrate:undo:all
 
 ---
 
-Criação do Model de usuário.
+## Criação do Model de usuário
 
 Criamos o arquivo `src/app/models/User.js`, que é reponsável por manipular os dados da tabela `users` do banco de dados (criar, alterar ou excluir). Dentro do arquivo definimos a classe `User`, que extende a classe `Model` do `sequelize`. Nessa classe indicamos as colunas que recebem informações do usuário do sistema e o tipo de dado de cada coluna.
 
@@ -336,7 +340,7 @@ Movemos a conexão com o banco de dados do `src/app.js` para um arquivo separado
 
 ---
 
-Criando loader de models.
+## Criando loader de models
 
 Após fazer a conexão com o banco de dados no arquivo `src/database/index.js`, importamos e inicializamos todos os Models para que eles possam ser utilizados pela aplicação.
 
@@ -346,7 +350,7 @@ Ao acessar a rota `/`, no console foi retornada a Query executada, no navegador 
 
 ---
 
-Definindo rota para criação de usuário. (Create/store)
+## Definindo rota para criação de usuário. (Create/store)
 
 Criamos o arquivo `src/app/controllers/UserController.js`, onde definimos a classe `store`, responsável por criar um usuário com base nos dados recebidos no corpo da requisição via objeto JSON e por retornar o usuário criado.
 
@@ -362,7 +366,7 @@ Muitas informações são retornadas após a criação de um usuário, por isso 
 
 ---
 
-Gerando hash da senha do Usuário.
+## Gerando hash da senha do Usuário
 
 Para fazer a encriptação da senha, instalamos o módulo do Node chamado `bcrypt`:
 
@@ -374,7 +378,7 @@ No arquivo `UserController` importamos esse módulo, adicionamos um campo virtua
 
 ---
 
-Conceito de JWT (Jason Web Token).
+## Conceito de JWT (Jason Web Token)
 
 JWT é uma forma de realizarmos autenticação em APIs RESTfull utilizando objetos JSON ao invés de Cookies de sessão (utilizados em aplicações MVC tradicionais com HTML nas Views).
 
@@ -390,7 +394,7 @@ Após a criação de uma sessão e a geração desse Token JWT, a string do toke
 
 ---
 
-Autenticação de Usuário utilizando JWT.
+## Autenticação de Usuário utilizando JWT
 
 Para criar essa nova característica (feature) da aplicação, pensamos com qual tipo de entidade estamos lidando, e, como vamos criar uma nova sessão (e não um novo usuário), criamos o arquivo para lidar com essa nova entidade.
 
@@ -417,7 +421,7 @@ Movemos os configurações da geração de Token JWT para um arquivo externo (`s
 
 ---
 
-Definição do middleware de autenticação.
+## Definição do middleware de autenticação.
 
 Algumas rotas são restritas apenas para usuários que estejam logados na aplicação, como por exemplo a rota de atualização de um usuário (ou seja, não deve ser possível atualizar um usuário sem estar autenticado). Por isso, temos que verificar se um usuário está logado em algumas rotas específicas, para isso utilizamos um `middleware`.
 
@@ -465,7 +469,7 @@ Testamos as alterações no Insomnia.
 
 ---
 
-Alteramos o `UserController.store`, importando o `Yup`. 
+Alteramos o `UserController.store`, importando o `Yup`.
 
 Adicionamos a validação dos campos `name`, `email` e `password` via Yup. Caso a validação do Yup não funcione, retornamos um erro pro cliente.
 
@@ -476,3 +480,44 @@ Adicionamos a validação dos campos `name`, `email`, `oldPassword`, `password` 
 Caso a validação do Yup não funcione, retornamos um erro pro cliente.
 
 Testamos as alterações no Insomnia.
+
+---
+
+## Implementando o upload de arquivos
+
+Na nossa aplicação os provedores de serviço poderão ter uma foto de avatar, por isso será necessário implementar o upload de arquivos.
+
+Podemos fazer o upload das seguintes formas (optamos pela segunda):
+
+- Junto com as informações do usuário, ao cadastrá-lo no banco de dados.
+- Separado das informações do usuário, de maneira isolada. O upload é feito ao selecionar uma nova imagem, um `id` com a referência dessa imagem é gerado e esse `id` pode ser enviado junto com as outras informações no formato JSON (já que objetos JSON não suportam uploads de arquivo).
+
+Para implementar essa funcionalidade, instalamos o módulo `multer`, que é responsável por receber arquivos com o tipo de corpo `Multipart Form Data` para envio de arquivos físicos (ao invés do tipo de corpo de um objeto `JSON`):
+
+```
+yarn add multer
+```
+
+Na raiz da aplicação, criamos as pastas `tmp/uploads`, que é onde ficarão os arquivos enviados pelo cliente.
+
+Criamos o arquivo de configuração do Multer em `src/config/multer.js`.
+
+No arquivo de configuração, precisamos definir o tipo de armazenamento na propriedade `storage`, que pode ser:
+
+- Em um CDN (Content Delivery Network): servidores feitos para armazenamento de arquivos físicos, como por exemplo o "Amazon S3" ou o "Digital Ocean Spaces".
+- Em disco, junto com a aplicação.
+
+Para essa aplicação, optamos pela segunda opção.
+
+Na propriedade `storage` definimos o tipo de armazenamento como em disco através do método `diskStorage`. Nesse método, enviamos um objeto com:
+
+- `destination`: o local onde cada imagem será salva (`tmp/uploads`);
+- `filename`: função para alterar o nome do arquivo antes de salvá-lo.
+
+Após realizar essa primeira configuração, alteramos o arquivo `src/routes.js` para importar o `multer`, as configurações do `multer` e também para definir a rota de upload dos arquivos (por enquanto, para esse teste, não criamos o arquivo de Controller).
+
+Na rota criada, antes de retornar uma resposta pro cliente, definimos o middleware `single('file')` do objeto `multer` que receberá o upload de um único arquivo no campo `file`.
+
+No Insomnia, criamos uma nova requisição do tipo `POST` apontando para a rota `/files`. No tipo de dado enviado selecionamos `Multiparm Form`, definimos o nome do campo como `file` e selecionamos um arquivo para upload. Na aba "Auth", inserimos o `token` do usuário, pois será necessário estar logado para definir uma foto pro avatar. Enviamos a requisição, recebemos a resposta e o arquivo de imagem foi criado na pasta `tmp/uploads`.
+
+---

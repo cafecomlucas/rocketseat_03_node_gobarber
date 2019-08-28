@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import multer from 'multer';
+import multerConfig from './config/multer'
 
 // importa o Controller de User
 import UserController from './app/controllers/UserController';
@@ -29,5 +31,12 @@ routes.put('/users', UserController.update);
 // caso auth fosse um middleware local,
 // seria definido na própria chamada do método put:
 // routes.put('/users', authMiddleware, UserController.update);
+
+// Inicializa o multer
+const upload = multer(multerConfig);
+
+// Rota para upload de um arquivo
+// Define como middleware o método do multer para upload de um único arquivo 
+routes.post('/files', upload.single('file'), (req, res) => res.json({ ok: true }));
 
 export default routes;
