@@ -668,6 +668,12 @@ No Insomnia, criamos uma nova pasta chamada `Appointments` e nela criamos uma no
 
 Editamos o `AppointmentController` e incluímos o Model `Appointment` para fazer o cadastro no banco de dados com as informações recebidas via objeto JSON no corpo da requisição. Recebemos o campo `provider_id`, o campo `date` no corpo da requisição e obtemos o `user_id` na variável `req.userId` (preenchida pelo middleware de autenticação). Efetuamos o cadastro utilizando esses dados e retornamos o objeto do Agendamento criado na resposta pro cliente.
 
-No Insomnia, informamos no campo `provider_id` o `id` de um usuário que é prestador de serviços e no campo `date`, colocamos uma data no formato `2019-08-29T15:00:00-03:00` (29/08/2019 15hrs com -3GMT do fuso horário). O agendamento foi criado no banco de dados.
+No Insomnia, logamos com o `token` de um usuário comum (que não é prestador de serviços). No objeto JSON informamos no campo `provider_id` o `id` de um usuário que é prestador de serviços e no campo `date`, colocamos uma data no formato `2019-08-29T15:00:00-03:00` (29/08/2019 15hrs com -3GMT do fuso horário/timezone). O agendamento foi criado no banco de dados.
+
+---
+
+## Validação na criação de agendamento
+
+No `AppointmentController`, importamos o módulo `Yup` para fazer a validação inicial dos campos. Também foi adicionada uma verificação que confere se o usuário recebido (`provider_id`) é realmente um prestador de serviços antes de realizar o cadastro no banco de dados.
 
 ---
