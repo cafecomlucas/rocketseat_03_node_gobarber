@@ -10,6 +10,9 @@ class File extends Model {
         // Campos preenchidos pelo usuário do sistema
         name: Sequelize.STRING,
         path: Sequelize.STRING,
+
+        // Campo gerado automáticamente, quando os dados
+        // de um Arquivo específico são requisitados
         url: {
           type: Sequelize.VIRTUAL,
           get() {

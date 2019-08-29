@@ -622,3 +622,34 @@ Em `ProviderController` também definimos o alias `avatar`.
 Testamos as modificações no Insomnia e as informações do Arquivo relacionado ao Provedor também foi retornada, incluindo o `name`, o `path` e a `url`.
 
 ---
+
+## Criação da tabela de agendamentos no BD (appointments)
+
+Criamos a Migration de agendamentos:
+
+```
+yarn sequelize migration:create --name=create-appointments
+```
+
+Após criação, alteramos o arquivo para definir os campos:
+- `date`: Data do agendamento;
+- `user_id`: Id do usuário que tem o agendamento marcado com outro Usuário prestador de serviços;
+- `provider_id`: Id do usuário que prestará o serviço;
+- `canceled_at`: Data do cancelamento (caso ocorra); 
+
+Com os campos definidos, executamos a Migration para criar a tabela:
+
+```
+yarn sequelize db:migrate
+```
+
+Conferimos que a tabela foi criada no Postbird.
+
+
+## Criação do Model de agendamentos (Appointment)
+
+Criamos o arquivo `src/app/models/Appointment.js`, onde definimos os campos `date`, `canceled_at` e o relacionamento entre o Model `Appointment` e o Model `User`.
+
+Modificamos o arquivo `src/database/index.js` para importar o Model `Appointment` (e executar a função `associate`).
+
+---
