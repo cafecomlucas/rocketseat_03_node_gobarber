@@ -663,3 +663,11 @@ Modificamos o arquivo `src/routes.js`, criando uma nova rota `/appointments` do 
 No Insomnia, criamos uma nova pasta chamada `Appointments` e nela criamos uma nova requisição chamada `Create` do tipo `POST` que aponta para `/appointments`. Teste indica que a rota está funcionando.
 
 ---
+
+## Criação de agendamento
+
+Editamos o `AppointmentController` e incluímos o Model `Appointment` para fazer o cadastro no banco de dados com as informações recebidas via objeto JSON no corpo da requisição. Recebemos o campo `provider_id`, o campo `date` no corpo da requisição e obtemos o `user_id` na variável `req.userId` (preenchida pelo middleware de autenticação). Efetuamos o cadastro utilizando esses dados e retornamos o objeto do Agendamento criado na resposta pro cliente.
+
+No Insomnia, informamos no campo `provider_id` o `id` de um usuário que é prestador de serviços e no campo `date`, colocamos uma data no formato `2019-08-29T15:00:00-03:00` (29/08/2019 15hrs com -3GMT do fuso horário). O agendamento foi criado no banco de dados.
+
+---
