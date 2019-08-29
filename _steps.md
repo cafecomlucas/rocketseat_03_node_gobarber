@@ -653,3 +653,13 @@ Criamos o arquivo `src/app/models/Appointment.js`, onde definimos os campos `dat
 Modificamos o arquivo `src/database/index.js` para importar o Model `Appointment` (e executar a função `associate`).
 
 ---
+
+## Criação da rota para criação de agendamentos
+
+Criamos o arquivo `src/app/controllers/AppointmentController.js` e o método `store`.
+
+Modificamos o arquivo `src/routes.js`, criando uma nova rota `/appointments` do tipo `POST` e associando essa rota ao método `store` do `AppointmentController`.
+
+No Insomnia, criamos uma nova pasta chamada `Appointments` e nela criamos uma nova requisição chamada `Create` do tipo `POST` que aponta para `/appointments`. Teste indica que a rota está funcionando.
+
+---

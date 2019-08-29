@@ -10,6 +10,8 @@ import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
 // importa o Controller de Provider (que também é User)
 import ProviderController from './app/controllers/ProviderController';
+// importa o Controller de Appointment
+import AppointmentController from './app/controllers/AppointmentController';
 
 // importa o middleware de autenticação
 import authMiddleware from './app/middlewares/auth';
@@ -36,13 +38,17 @@ routes.put('/users', UserController.update);
 // seria definido na própria chamada do método put:
 // routes.put('/users', authMiddleware, UserController.update);
 
-routes.get('/providers', ProviderController.index);
-
 // Inicializa o multer
 const upload = multer(multerConfig);
 
 // Rota para upload de um arquivo
 // Define como middleware o método do multer para upload de um único arquivo
 routes.post('/files', upload.single('file'), FileController.store);
+
+// Rota para listar todos os Usuários prestadores de serviço
+routes.get('/providers', ProviderController.index);
+
+// Rota para criar um Agendamento com um Usuário prestador de serviço
+routes.post('/appointments', AppointmentController.store);
 
 export default routes;
