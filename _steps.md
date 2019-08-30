@@ -735,3 +735,11 @@ Utilizamos a variável `date` do `Query Params` da requisição, convertemos a d
 No Insomnia, adicionamos o `Query Param` `date` para realização dos testes.
 
 ---
+
+## Validação de Usuário Prestador na listagem dos agendamentos
+
+No `ScheduleController`, adicionamos uma checagem que verifica se o usuário logado é mesmo um prestador de serviços.
+
+Testes realizados no Insomnia utilizando a sessão (token) de um Usuário comum (`token_user`) e de um Usuário Prestador (`token_provider`).
+
+---
