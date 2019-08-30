@@ -725,3 +725,13 @@ Como essa rota é de uso exclusivo de um Usuário Prestador, modifiquei as vari�
 No Insomnia foi criada a rota `/schedule` do tipo `GET` e configurado o `token_provider` para realização dos testes.
 
 ---
+
+## Filtrando pelo dia informado na requisição
+
+No `ScheduleController`, importamos alguns métodos do `date-fns` e o objeto `Op` do `sequelize` para adicionar um filtro na busca por agendamentos do Prestador.
+
+Utilizamos a variável `date` do `Query Params` da requisição, convertemos a data utilizando os métodos do `date-fns` e utilizamos o objeto `Op` para filtrar entre (`between`) o início e o final do dia informado.
+
+No Insomnia, adicionamos o `Query Param` `date` para realização dos testes.
+
+---
