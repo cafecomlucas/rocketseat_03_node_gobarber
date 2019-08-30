@@ -8,12 +8,22 @@ import File from '../models/File';
 class AppointmentController {
   // Lista todos os agendamentos (não cancelados) de um usuário específico
   async index(req, res) {
+    // guarda o valor da página (valor padrão 1)
+    const { page = 1 } = req.query;
+
+    // busca pelos agendamentos
     const appointments = await Appointment.findAll({
       where: {
         user_id: req.userId,
         canceled_at: null,
       },
       order: ['date'],
+      // limita para 20 agendamentos por página
+      limit: 20,
+      // offset indica de qual registro começar
+      // então a conta abaixo pula registros anteriores
+      // dependendo da página informada
+      offset: (page - 1) * 20,
       attributes: ['id', 'date'],
       // No Agendamento, através do relacionamento,
       // inclui na busca os dados do Prestador (User)

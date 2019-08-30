@@ -705,3 +705,11 @@ Em `routes` criamos a rota `/appointments` do tipo `GET` e associamos ao método
 No Insomnia foi criada a rota `/appointments` do tipo `GET` para realização dos testes.
 
 ---
+
+## Listagem de agendamentos com base no número da página
+
+No `AppointmentController` editamos o método `index` para guardar o dado `page` que vem através dos `Query params` via URL. Utilizamos esse dado como filtro do que será retornado para o cliente. 
+
+No `Insomnia`, dentro da aba `Query` definimos o parâmetro `page` e testamos com diferentes números.
+
+---
