@@ -672,8 +672,28 @@ No Insomnia, logamos com o `token` de um usuário comum (que não é prestador d
 
 ---
 
-## Validação na criação de agendamento
+## Validação inicial na criação de agendamento
 
 No `AppointmentController`, importamos o módulo `Yup` para fazer a validação inicial dos campos. Também foi adicionada uma verificação que confere se o usuário recebido (`provider_id`) é realmente um prestador de serviços antes de realizar o cadastro no banco de dados.
+
+---
+
+## Validação na criação de agendamento de acordo com as regras de negócio
+
+Será necessário verificar se a data/hora informada pelo Usuário já passou e se a já existe algum agendamento nessa data/hora. Para lidar com datas, instalamos o módulo date-fns em sua última versão:
+
+```
+yarn add date-fns@next
+```
+
+No `AppointmentController` importamos alguns métodos do módulo `date-fns`, utilizados para formatar e verificar datas.
+
+Verificamos se a data selecionada pro agendamento não é uma data passada (deve ser uma data futura).
+
+Também verificamos se a data selecionada pro agendamento com o prestador de serviço indicado já não está sendo utilizada.
+
+Testes realizados pelo Insomnia.
+
+---
 
 ---
