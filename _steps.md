@@ -696,7 +696,7 @@ Testes realizados pelo Insomnia.
 
 ---
 
-## Definição da rota para listagem de agendamentos
+## Definição da rota para listagem de agendamentos (do Usuário Comum)
 
 No `AppointmentController` criamos o método `index`, responsável por listar todos os agendamentos de um usuário específico. Em cada item da listagem é retornado a data do Agendamento, o Prestador e qual o avatar (Arquivo) desse Prestador.
 
@@ -711,5 +711,17 @@ No Insomnia foi criada a rota `/appointments` do tipo `GET` para realização do
 No `AppointmentController` editamos o método `index` para guardar o dado `page` que vem através dos `Query params` via URL. Utilizamos esse dado como filtro do que será retornado para o cliente. 
 
 No `Insomnia`, dentro da aba `Query` definimos o parâmetro `page` e testamos com diferentes números.
+
+---
+
+## Definição da rota para listagem de agendamentos (do Usuário Prestador)
+
+Criamos o `ScheduleController` com o método `index`, responsável por listar todos os agendamentos do prestador logado. Em cada item da listagem é retornado o `id` e a data do Agendamento.
+
+Em `routes` criamos a rota `/schedule` do tipo `GET` e associamos ao método `index` do `ScheduleController`.
+
+Como essa rota é de uso exclusivo de um Usuário Prestador, modifiquei as variáveis do Insomnia, definindo uma variável chamada `token_user` para as rotas do usuário comum (como a rota `/appointments`) e a variável chamada `token_provider` para as rotas do usuário prestador (como a rota `/schedule`).
+
+No Insomnia foi criada a rota `/schedule` do tipo `GET` e configurado o `token_provider` para realização dos testes.
 
 ---

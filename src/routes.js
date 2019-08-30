@@ -12,6 +12,8 @@ import FileController from './app/controllers/FileController';
 import ProviderController from './app/controllers/ProviderController';
 // importa o Controller de Appointment
 import AppointmentController from './app/controllers/AppointmentController';
+// importa o Controller de Schedule
+import ScheduleController from './app/controllers/ScheduleController';
 
 // importa o middleware de autenticação
 import authMiddleware from './app/middlewares/auth';
@@ -48,9 +50,12 @@ routes.post('/files', upload.single('file'), FileController.store);
 // Rota para listar todos os Usuários prestadores de serviço
 routes.get('/providers', ProviderController.index);
 
-// Rota para listar Agendamentos de um Usuário
+// Rota para listar Agendamentos de um Usuário Comum
 routes.get('/appointments', AppointmentController.index);
 // Rota para criar um Agendamento com um Usuário prestador de serviço
 routes.post('/appointments', AppointmentController.store);
+
+// Rota para listar Agendamentos de um Usuário prestador de serviço
+routes.get('/schedule', ScheduleController.index);
 
 export default routes;

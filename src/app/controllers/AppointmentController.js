@@ -4,7 +4,7 @@ import Appointment from '../models/Appointment';
 import User from '../models/User';
 import File from '../models/File';
 
-// Classe que manipula os dados de Agendamentos
+// Classe que manipula os dados de Agendamentos (do Usuário Comum)
 class AppointmentController {
   // Lista todos os agendamentos (não cancelados) de um usuário específico
   async index(req, res) {
