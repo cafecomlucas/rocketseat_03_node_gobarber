@@ -2,9 +2,44 @@ import * as Yup from 'yup';
 import { startOfHour, parseISO, isBefore } from 'date-fns';
 import Appointment from '../models/Appointment';
 import User from '../models/User';
+import File from '../models/File';
 
 // Classe que manipula os dados de Agendamentos
 class AppointmentController {
+  // Lista todos os agendamentos (não cancelados) de um usuário específico
+  async index(req, res) {
+    const appointments = await Appointment.findAll({
+      where: {
+        user_id: req.userId,
+        canceled_at: null,
+      },
+      order: ['date'],
+      attributes: ['id', 'date'],
+      // No Agendamento, através do relacionamento,
+      // inclui na busca os dados do Prestador (User)
+      include: {
+        model: User,
+        // necessário indicar qual o campo relacionado
+        // para buscar os dados na tabela 'users'
+        // 'provider' (provider_id) ou 'user' (user_id)
+        as: 'provider',
+        attributes: ['id', 'name'],
+        // No User, através do relacionamento,
+        // inclui na busca os dados do File (avatar) do Prestador (User)
+        include: {
+          model: File,
+          as: 'avatar',
+          // necessário incluir 'path' pois o campo
+          // virtual 'url' depende dessa informação
+          attributes: ['path', 'url'],
+        },
+      },
+    });
+
+    return res.json(appointments);
+  }
+
+  // Cria um agendamento
   async store(req, res) {
     // faz a validação inicial dos campos
     const schema = Yup.object().shape({

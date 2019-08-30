@@ -696,4 +696,12 @@ Testes realizados pelo Insomnia.
 
 ---
 
+## Definição da rota para listagem de agendamentos
+
+No `AppointmentController` criamos o método `index`, responsável por listar todos os agendamentos de um usuário específico. Em cada item da listagem é retornado a data do Agendamento, o Prestador e qual o avatar (Arquivo) desse Prestador.
+
+Em `routes` criamos a rota `/appointments` do tipo `GET` e associamos ao método `index` do `AppointmentController`.
+
+No Insomnia foi criada a rota `/appointments` do tipo `GET` para realização dos testes.
+
 ---

@@ -48,6 +48,8 @@ routes.post('/files', upload.single('file'), FileController.store);
 // Rota para listar todos os Usuários prestadores de serviço
 routes.get('/providers', ProviderController.index);
 
+// Rota para listar Agendamentos de um Usuário
+routes.get('/appointments', AppointmentController.index);
 // Rota para criar um Agendamento com um Usuário prestador de serviço
 routes.post('/appointments', AppointmentController.store);
 
