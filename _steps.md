@@ -743,3 +743,25 @@ No `ScheduleController`, adicionamos uma checagem que verifica se o usuário log
 Testes realizados no Insomnia utilizando a sessão (token) de um Usuário comum (`token_user`) e de um Usuário Prestador (`token_provider`).
 
 ---
+
+## Configurando acesso ao banco de dados não relacional MongoDB
+
+Para trabalharmos com dados não relacionais e que precisam ser obtidos de forma performatica, optamos por utilizar o banco de dados MongoDB. Baixamos e inicializamos esse serviço através do Docker:
+
+```
+$ docker run --name mongobarber -p 27017:27017 -d -t mongo
+```
+
+Após inicialização, acessamos o endereço http://192.168.99.100:27017/ e recebemos a mensagem "It looks like you are trying to access MongoDB over HTTP on the native driver port.", indicando que funcionou.
+
+Com o servidor do MongoDB iniciado, instalamos o módulo de ORM via Node chamado `mongoose` responsável por lidar com a conexão e a manipulação dos dados:
+
+```
+yarn add mongoose
+```
+
+Após a instalação, configuramos a conexão com o MongoDB no arquivo `src/database/index.js` através do método `mongoose.connect`. No primeiro parâmetro informamos a string com a URL de conexão e o nome da base de dados (no caso do MongoDB, a base de dados será criada automaticamente). No segundo parâmetro definimos as opções adicionais (configurando para aceitar a conexão via URL e para aceitar a busca e atualização de dados).
+
+Testamos reiniciando o servidor, a ausência de erros indica que a conexão ocorreu normalmente.
+
+---
