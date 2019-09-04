@@ -62,5 +62,7 @@ routes.get('/schedule', ScheduleController.index);
 
 // Rota para listar Notificações de Agendamento de um Usuário prestador de serviço
 routes.get('/notifications', NotificationController.index);
+// Rota para atualizar uma Notificação (pra marcar como lida)
+routes.put('/notifications/:id', NotificationController.update);
 
 export default routes;

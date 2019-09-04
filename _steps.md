@@ -799,3 +799,13 @@ Em `routes.js` associamos o método `index` a rota `/notifications` do tipo `GET
 No Insomnia configuramos a rota e testamos.
 
 ---
+
+## Definição da rota de atualização da Notificação (marcar como lida)
+
+No `NotificationController` criamos o método `update` para atualizar o campo `read` da Notificação e marca-la como lida (alterando o valor para `true`).
+
+Em `routes.js` criamos a nova rota do tipo `put` e associamos ao método `update`.
+
+No Insomnia configuramos a rota e testamos.
+
+---
