@@ -765,3 +765,25 @@ Após a instalação, configuramos a conexão com o MongoDB no arquivo `src/data
 Testamos reiniciando o servidor, a ausência de erros indica que a conexão ocorreu normalmente.
 
 ---
+
+## Guardando registros de Notificações a cada novo agendamento criado
+
+O MongoDB utiliza um tipo de tabela mais flexivel e performática chamado "schema". Os schemas não precisam ter relacionamentos entre eles. A criação ou remoção de schemas ou campos de cada schema é facilitada e não necessita de `migrations` para esse tipo de operação. Cada registro pode ter campos diferentes. Também não é necessário inicializar cada um dos schemas (como é feito com cada Model no caso do PostgresSQL). Contudo, por conta dessa flexibilidade, é necessário manter a atenção com qualquer tipo de alteração na estrutura dos schemas.
+
+Criamos o schema `Notification` e definimos os campos principais: `content` (mensagem), `user` (Prestador) e `read` (se foi lida ou não) para cada registro de Notificação.
+
+Importamos o schema `Notifications` no `AppointmentController`, para criamos uma Notificação pro Prestador de serviço assim que o Usuário Comum realizar um agendamento.
+
+No `AppointmentController` buscamos pelo Usuário logado para obter o nome dele. Também formatamos a data registrada no Agendamento utilizando a função `format` do `date-fns`, além de definir a localização como `pt` para que o mês exibido apareça em português. Utilizamos essas informações para criar o conteúdo da mensagem de Notificação. 
+
+__Observação:__ Como não existe relacionamento, essa mensagem continuará com esses dados mesmo que o usuário modifique o nome dele, por exemplo. Isso também acontece em aplicações como o Discord, quando o usuário altera o nickname, as mensagens antigas continuam com o nickname antigo, pois o estado da aplicação era assim naquele momento. Isso é pra funcionar dessa maneira nesse tipo de contexto. Perdemos mesmo esse link, porém, ganhamos performance.
+
+O único relacionamento necessário é com o `id` do Usuário Prestador, pois precisamos saber pra quem será enviada a Notificação.
+
+Para visualizar os registros das Notificações criadas (assim como visualizamos as tabelas/registros do PostgresSQL via Postbird), instalamos o GUI criado pela própria empresa do MongoDB, chamado "MongoDB Compass Community". Através dele, fizemos a conexão com o MongoDB.
+
+Ao criar um novo Agendamento, a base de dados `gobarber` e a collection (tabela) `notifications` foram criadas automaticamente. Dentro da collection `notifications` um registro/Document foi incluído .
+
+Neste ponto temos a aplicação com um banco SQL para dados estruturados e relacionamentos (através do PostgresSQL com o ORM `sequelize`), e um banco No-SQL para dados não estruturados e performance (através do MongoDB com o ORM `mongoose`).
+
+---
