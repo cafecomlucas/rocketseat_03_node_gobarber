@@ -69,13 +69,25 @@ class AppointmentController {
      *  VERIFICA SE O USUÁRIO INFORMADO É MESMO UM PRESTADOR DE SERVIÇOS
      * */
 
-    const isProvider = await User.findOne({
+    const provider = await User.findOne({
       where: { id: provider_id, provider: true },
     });
-    if (!isProvider) {
+    if (!provider) {
       return res
         .status(401)
         .json({ error: 'You can only create appointments with providers' });
+    }
+
+    /**
+     *  VERIFICA SE O USUÁRIO INFORMADO IGUAL AO USUÁRIO LOGADO
+     * */
+
+    if (provider.id === req.userId) {
+      return res
+        .status(401)
+        .json({
+          error: 'You can only create appointments with others providers',
+        });
     }
 
     /**
