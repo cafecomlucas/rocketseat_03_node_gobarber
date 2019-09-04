@@ -787,3 +787,15 @@ Ao criar um novo Agendamento, a base de dados `gobarber` e a collection (tabela)
 Neste ponto temos a aplicação com um banco SQL para dados estruturados e relacionamentos (através do PostgresSQL com o ORM `sequelize`), e um banco No-SQL para dados não estruturados e performance (através do MongoDB com o ORM `mongoose`).
 
 ---
+
+## Definição de rota para listar as Notificações
+
+Criamos o `NotificationController` com o método `index`, que tem a responsabilidade de validar se o Usuário logado é um Prestador, para depois buscar todas as notificações deste Usuário e retornar um objeto JSON com o limite de 20 registros (depois faremos a paginação) e ordenado em forma decrescente (modo pilha e não modo fila, ou seja, o mais recente é o primeiro da lista).
+
+No ORM do MongoDB, os métodos são diferentes e para filtrar/formatar as informações recebidas, ao invés de definirmos isso no(s) argumento(s) do método,utilizamos a programação funcional (encadeamento de funções / chainning).
+
+Em `routes.js` associamos o método `index` a rota `/notifications` do tipo `GET`.
+
+No Insomnia configuramos a rota e testamos.
+
+---

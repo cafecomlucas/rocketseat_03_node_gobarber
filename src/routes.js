@@ -14,6 +14,8 @@ import ProviderController from './app/controllers/ProviderController';
 import AppointmentController from './app/controllers/AppointmentController';
 // importa o Controller de Schedule
 import ScheduleController from './app/controllers/ScheduleController';
+// importa o Controller de Notification
+import NotificationController from './app/controllers/NotificationController';
 
 // importa o middleware de autenticação
 import authMiddleware from './app/middlewares/auth';
@@ -57,5 +59,8 @@ routes.post('/appointments', AppointmentController.store);
 
 // Rota para listar Agendamentos de um Usuário prestador de serviço
 routes.get('/schedule', ScheduleController.index);
+
+// Rota para listar Notificações de Agendamento de um Usuário prestador de serviço
+routes.get('/notifications', NotificationController.index);
 
 export default routes;
