@@ -819,3 +819,25 @@ Antes de realizar o cancelamento, conferimos se o Usuário logado é o mesmo que
 Rota configurada e testada via Insomnia.
 
 ---
+
+## Utilização do módulo Nodemailer para envio de e-mails
+
+Instalamos o módulo `nodemailer`:
+```
+yarn add nodemailer
+```
+
+Definimos as configurações de inicialização do `nodemailer` no arquivo `src/lib/mail.js` e as configurações do serviço de e-mail em si foram definidas no arquivo `src/lib/Mail.js`. Normalmente, serviços desses tipo (externos) são definidos dentro na pasta `lib` (e não nos Controllers, pois eles apenas utilizam o serviço).
+
+Os dados utilizados na configuração do e-mail são da ferramenta Mailtrap, ela oferece uma caixa de entrada gratuíta para testes em ambiente de desenvolvimento. Quando a aplicação for ao ar, não é recomendado utilizar serviços de uso comum, como o Gmail ou Hotmail, pois existe um limite e podemos ser bloqueados, ao invés disso, podemos escolher alguma opção de serviço feito para disparar muitos e-mails:
+
+* Amazon SES (utilizado pela Rocketseat);
+* Mailgun;
+* Sparkpost;
+* Mandril (pra quem usa Mailchimp).
+
+Com o `nodemailer` configurado, importamos e utilizamos ele no `AppointmentController` assim que um cancelamento é feito.
+
+Ao realizar testes pelo Insomnia, recebemos a mensagem na ferramenta Mailtrap. 
+
+---

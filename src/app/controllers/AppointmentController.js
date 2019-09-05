@@ -5,6 +5,7 @@ import Appointment from '../models/Appointment';
 import User from '../models/User';
 import File from '../models/File';
 import Notification from '../schemas/Notification';
+import Mail from '../../lib/Mail';
 
 // Classe que manipula os dados de Agendamentos (do Usuário Comum)
 class AppointmentController {
@@ -162,6 +163,14 @@ class AppointmentController {
       where: {
         id: req.params.id,
       },
+      include: [
+        // inclui os dados do usuário Prestador de serviços
+        {
+          model: User,
+          as: 'provider',
+          attributes: ['name', 'email'],
+        },
+      ],
     });
 
     // Verifica se é o Usuário logado é o mesmo do Agendamento
@@ -184,6 +193,13 @@ class AppointmentController {
     // Define a data de cancelamento
     appointment.canceled_at = new Date();
     await appointment.save();
+
+    // Envia o e-mail de cancelamento pro Usuário Prestador de serviços
+    await Mail.sendMail({
+      to: `${appointment.provider.name} <${appointment.provider.email}>`,
+      subject: 'Agendamento cancelado',
+      text: 'Você tem um novo cancelamento',
+    });
 
     // Retorna o registro do Agendamento cancelado
     return res.json(appointment);
