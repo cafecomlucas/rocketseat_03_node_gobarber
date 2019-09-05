@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { startOfHour, parseISO, isBefore, format } from 'date-fns';
+import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import Appointment from '../models/Appointment';
 import User from '../models/User';
@@ -83,11 +83,9 @@ class AppointmentController {
      * */
 
     if (provider.id === req.userId) {
-      return res
-        .status(401)
-        .json({
-          error: 'You can only create appointments with others providers',
-        });
+      return res.status(401).json({
+        error: 'You can only create appointments with others providers',
+      });
     }
 
     /**
@@ -154,6 +152,40 @@ class AppointmentController {
     });
 
     // retorna o objeto do agendamento criado pro cliente
+    return res.json(appointment);
+  }
+
+  // Cancela um agendamento
+  async delete(req, res) {
+    // busca o Agendamento
+    const appointment = await Appointment.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    // Verifica se é o Usuário logado é o mesmo do Agendamento
+    if (req.userId !== appointment.user_id) {
+      return res.status(401).json({
+        error: "You don't have permission to cancel this appointment.",
+      });
+    }
+
+    // Subtraí duas horas da data registrada no banco
+    // (como a data do banco já vem no formato data, não é necessário converter)
+    const dateWithSub = subHours(appointment.date, 2);
+    // se a data subtraída for mais antiga que a data atual
+    if (isBefore(dateWithSub, new Date())) {
+      return res
+        .status(401)
+        .json({ error: 'You can only cancel appointments 2 hours in advance' });
+    }
+
+    // Define a data de cancelamento
+    appointment.canceled_at = new Date();
+    await appointment.save();
+
+    // Retorna o registro do Agendamento cancelado
     return res.json(appointment);
   }
 }

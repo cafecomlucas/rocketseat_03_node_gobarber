@@ -56,6 +56,8 @@ routes.get('/providers', ProviderController.index);
 routes.get('/appointments', AppointmentController.index);
 // Rota para criar um Agendamento com um Usuário prestador de serviço
 routes.post('/appointments', AppointmentController.store);
+// Rota para cancelar um Agendamento feito com um Usuário prestador de serviço
+routes.delete('/appointments/:id', AppointmentController.delete);
 
 // Rota para listar Agendamentos de um Usuário prestador de serviço
 routes.get('/schedule', ScheduleController.index);

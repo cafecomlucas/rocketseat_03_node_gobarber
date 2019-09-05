@@ -788,7 +788,7 @@ Neste ponto temos a aplicação com um banco SQL para dados estruturados e relac
 
 ---
 
-## Definição de rota para listar as Notificações
+## Definição de rota para listar todas as Notificações (Index/GET)
 
 Criamos o `NotificationController` com o método `index`, que tem a responsabilidade de validar se o Usuário logado é um Prestador, para depois buscar todas as notificações deste Usuário e retornar um objeto JSON com o limite de 20 registros (depois faremos a paginação) e ordenado em forma decrescente (modo pilha e não modo fila, ou seja, o mais recente é o primeiro da lista).
 
@@ -800,12 +800,22 @@ No Insomnia configuramos a rota e testamos.
 
 ---
 
-## Definição da rota de atualização da Notificação (marcar como lida)
+## Definição da rota de atualização da Notificação (marcar como lida) | (Update/PUT)
 
 No `NotificationController` criamos o método `update` para atualizar o campo `read` da Notificação e marca-la como lida (alterando o valor para `true`).
 
 Em `routes.js` criamos a nova rota do tipo `put` e associamos ao método `update`.
 
 No Insomnia configuramos a rota e testamos.
+
+---
+
+## Definição da rota para cancelar um Agendamento (Delete/delete)
+
+Definimos uma nova rota para deletar um agendamento, criando o método `delete` no `AppointmentController` e associando ele a rota definida em `routes.js`.
+
+Antes de realizar o cancelamento, conferimos se o Usuário logado é o mesmo que está no registro do Agendamento e se o horário do agendamento está a mais de 2 horas de acontecer (regra de negócio). Caso passe nas validações, o campo `canceled_at` é atualizado com a data atual e os dados do registro atualizado é retornado pro cliente.
+
+Rota configurada e testada via Insomnia.
 
 ---
