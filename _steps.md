@@ -841,3 +841,45 @@ Com o `nodemailer` configurado, importamos e utilizamos ele no `AppointmentContr
 Ao realizar testes pelo Insomnia, recebemos a mensagem na ferramenta Mailtrap. 
 
 ---
+
+## Definição do template de e-mail
+
+Para os e-mails no formato HTML é interessante utilizarmos alguma template engine, que são módulos que permitem trabalharmos com modelos de arquivos HTML e com as variáveis do node, dentre outras funcionalidades.
+
+A template engine escolhida foi a Handlebars. Para integrar essa template engine ao `express` e ao `nodemailer`, instamos os módulos:
+
+```
+yarn add express-handlebars nodemailer-express-handlebars
+```
+
+Criamos a estrutura de pastas e arquivos que serão utilizados pela template engine:
+```
+│
+└─┬ app/
+  │
+  └┬ views/
+   │   
+   └──┬ emails/
+      │
+      ├─┬ layouts/
+      │ │
+      │ └─ default.hbs
+      │
+      ├─┬ partials/
+      │ │
+      │ └─ footer.hbs
+      │
+      └── cancelation.hbs
+```
+
+No arquivo `src/lib/Mail.js`, importamos os módulos instalados e definimos as configurações e os diretórios dos templates no método `configureTemplates`.
+
+Com a estrutura de template configurada, definimos o layout padrão no arquivo `layouts/default.hbs` e, para o rodapé, que será repetido em todos os e-mails, importamos o partial `footer.hbs`.
+
+Com o layout padrão configurado, definimos qual será e mensagem do e-mail HTML no arquivo `cancelation.hbs` utilizando as variáveis que serão definidas antes do envio.
+
+Com o template definido, alteramos o `AppointmentController`, definindo as variáveis utilizadas pelo template e modificando o modo de envio (de `text` para `template`[com o `context`]).
+
+No Insomnia, cancelamos um agendamento para testar e recebemos a mensagem na ferramenta Mailtrap.
+
+---
