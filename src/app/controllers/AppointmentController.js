@@ -5,7 +5,9 @@ import Appointment from '../models/Appointment';
 import User from '../models/User';
 import File from '../models/File';
 import Notification from '../schemas/Notification';
-import Mail from '../../lib/Mail';
+
+import CancellationMail from '../jobs/CancellationMail';
+import Queue from '../../lib/Queue';
 
 // Classe que manipula os dados de Agendamentos (do Usuário Comum)
 class AppointmentController {
@@ -200,20 +202,9 @@ class AppointmentController {
     appointment.canceled_at = new Date();
     await appointment.save();
 
-    // Envia o e-mail de cancelamento pro Usuário Prestador de serviços
-    await Mail.sendMail({
-      to: `${appointment.provider.name} <${appointment.provider.email}>`,
-      subject: 'Agendamento cancelado',
-      template: 'cancelation',
-      context: {
-        // preenche as variáveis para serem utilizadas pela template engine
-        provider: appointment.provider.name,
-        user: appointment.user.name,
-        date: format(appointment.date, "'dia' dd 'de' MMMM', às' HH:mm'h'", {
-          locale: pt,
-        }),
-      },
-    });
+    // Adiciona o job para envio do e-mail na fila
+    // add(chaveDaFila, objetoComInformaçõesProJobUtilizar)
+    Queue.add(CancellationMail.key, { appointment });
 
     // Retorna o registro do Agendamento cancelado
     return res.json(appointment);

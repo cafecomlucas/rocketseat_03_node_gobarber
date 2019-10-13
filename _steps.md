@@ -883,3 +883,42 @@ Com o template definido, alteramos o `AppointmentController`, definindo as vari�
 No Insomnia, cancelamos um agendamento para testar e recebemos a mensagem na ferramenta Mailtrap.
 
 ---
+
+## Configurando fila para envio de cada e-mail com o Redis
+
+Quando cancelamos um Agendamento, o tempo para envio de e-mail é muito longo (mais de 2 segundos), pois o servidor aguarda o envio ser concluído para continuar com o fluxo da aplicação. 
+
+Para diminuir o tempo de resposta nós poderiamos simplesmente remover o `await` que vem antes do método `Mail.sendmail`, e o servidor não teria mais essa espera. Contudo, o problema dessa abordagem é que se ocorrer qualquer tipo de erro no envio, não será possível monitorar para verificar o que houve e tentar enviar novamente.
+
+Uma alternativa viável é guardar cada e-mail a ser enviado em uma tarefa (job) em uma fila e processar essa fila de forma independente da aplicação. Para guardar essas tarefas em segundo plano (background jobs), utilizamos o módulo `bee-queue`. Para persistência dos dados, utilizamos o banco de dadosNo-SQL `redis`, que utiliza o armazenamento em chave/valor (não usa schemas), é mais performático e menos burocrático do que as outras opções para persistência de dados. 
+
+(Para trabalhar com filas também existem outras opções como o `Kue`, que é um pouco menos performático, mas tem mas opções para a tratativa de eventos e priorização das tarefas)
+
+Instalamos o módulo `bee-queue`:
+```
+yarn add bee-queue
+```
+
+Instalamos e inicializamos o serviço do `redis` através do docker:
+```
+docker run --name redisbarber -p 6379:6379 -d -t redis:alpine
+```
+
+Caso surgisse algum erro na inicialização, poderiamos ver o que aconteceu através do comando:
+```
+docker logs [id do serviço]
+```
+
+Arquivo `config/redis.js` criado com as configurações de conexão com o banco de dados, setamos apenas a propriedade `host` e a propriedade `port`.
+
+Arquivo `app/jobs/CancellationMail.js` criado para armazenar o primeiro job: cancelamento de e-mail. Foi definida a chave única desse job na variável `key` com o mesmo nome da classe e o trecho de código que será executado no processamento desse job no método `handle`.
+
+Arquivo `lib/Queue.js` criado para definição das configurações de inicialização da fila e os métodos para adicionar jobs e processar jobs. No inicio do arquivo importamos o `bee-queue`, o job `CancellationMail` e as configurações do `redis`. Criamos a constante `jobs` para armazenar todos os jobs em um Array (semelhante ao que fizemos com os Models no arquivo `database/index.js`). Depois, definimos no método `constructor` o objeto `this.queues` que guardará as filas e também fizemos a chamada para o método `this.init`. No método `this.init` percorremos o Array `jobs`, setando em cada item um novo objeto com as propriedades `bee` (com as configurações da fila) e `handle` (função a ser executada no processamento de cada job da fila). Também definimos o método `add`, responsável por adicionar itens em uma determinada fila, ele recebe a chave da fila (parâmetro `queue`) e os dados a serem utilizados pelo handle posteriormente (parâmetro `job`). Por fim, foi definido o método `processQueue`, responsável por percorrer as filas e processar os jobs, executando o `handle` informado via parâmetro.
+
+Para finalizar, criamos o arquivo `src/queue.js`, responsável por executar o método `processQueue`, que iniciará um "loop" que verifica se existem novos itens na fila e os executa. Esse método será executado em outro terminal, dessa maneira não utilizar os recursos da aplicação. 
+
+Alteramos o arquivo `package.json`, adicionando a propriedade `queue` dentro de script, para que o arquivo `src/queue.js` seja executado pelo `nodemon` utilizando o `sucrase` (aceitando a sintaxe de import/export).
+
+(Ao realizar os testes, percebi que é possível re-cancelar um agendamento já cancelado)
+
+---
