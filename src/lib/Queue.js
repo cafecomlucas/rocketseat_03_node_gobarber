@@ -41,8 +41,13 @@ class Queue {
       // para cada fila existente (this.queues[key])
       const { bee, handle } = this.queues[job.key];
       // processa cada job armazenada nela
-      bee.process(handle);
+      bee.on('failed', this.handleFailure).process(handle);
     });
+  }
+
+  handleFailure(job, err) {
+    console.log(`Queue ${job.queue.name}: FAILED...`);
+    console.log(err);
   }
 }
 

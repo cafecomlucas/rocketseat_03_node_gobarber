@@ -884,7 +884,7 @@ No Insomnia, cancelamos um agendamento para testar e recebemos a mensagem na fer
 
 ---
 
-## Configurando fila para envio de cada e-mail com o Redis
+## Configurando envio de e-mail através de uma fila com o Bee-queue e o Redis
 
 Quando cancelamos um Agendamento, o tempo para envio de e-mail é muito longo (mais de 2 segundos), pois o servidor aguarda o envio ser concluído para continuar com o fluxo da aplicação. 
 
@@ -919,6 +919,19 @@ Para finalizar, criamos o arquivo `src/queue.js`, responsável por executar o m�
 
 Alteramos o arquivo `package.json`, adicionando a propriedade `queue` dentro de script, para que o arquivo `src/queue.js` seja executado pelo `nodemon` utilizando o `sucrase` (aceitando a sintaxe de import/export).
 
+Iniciamos o processamento da fila através do comando:
+```
+yarn queue
+```
+
 (Ao realizar os testes, percebi que é possível re-cancelar um agendamento já cancelado)
+
+---
+
+## Monitorando falhas na fila
+
+No arquivo de serviço `lib/Queue.js` modificamos o método `processQueue` adicionando o evento `failed` do `bee-queue` caso ocorra alguma falha no momento de executar o código. Definimos um método chamado `handleFailure`, que, por enquanto (enquanto estamos em ambiente de desenvolvimento), apenas exibirá o código no console.
+
+Para testar, altermos o nome do método `sendMail` para um nome que não existe. Ao tentar efetuar um cancelamento apareceu um erro no termial do script `queue.js`.
 
 ---
