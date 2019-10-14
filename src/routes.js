@@ -10,6 +10,8 @@ import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
 // importa o Controller de Provider (que também é User)
 import ProviderController from './app/controllers/ProviderController';
+// importa o Controller de Available (que é um Provider)
+import AvailableController from './app/controllers/AvailableController';
 // importa o Controller de Appointment
 import AppointmentController from './app/controllers/AppointmentController';
 // importa o Controller de Schedule
@@ -51,6 +53,8 @@ routes.post('/files', upload.single('file'), FileController.store);
 
 // Rota para listar todos os Usuários prestadores de serviço
 routes.get('/providers', ProviderController.index);
+// Rota para listar todos os horários disponíveis de um Usuário prestador específico
+routes.get('/providers/:providerId/available', AvailableController.index);
 
 // Rota para listar Agendamentos de um Usuário Comum
 routes.get('/appointments', AppointmentController.index);

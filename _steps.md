@@ -935,3 +935,21 @@ No arquivo de serviço `lib/Queue.js` modificamos o método `processQueue` adici
 Para testar, altermos o nome do método `sendMail` para um nome que não existe. Ao tentar efetuar um cancelamento apareceu um erro no termial do script `queue.js`.
 
 ---
+
+## Listando horários disponíveis do prestador de um dia específico | GET/Index
+
+Criamos o arquivo `AvailableController` com o método `index` para listar apenas os horários disponíveis de um Prestador em determinado dia. 
+
+O método é muito semelhante ao que utilizamos no `ScheduleController`, com a diferença que aqui nós retornamos outras informações, como o `time` (horário) formatado, o `value` com a data completa e o `available` com a disponibilidade de cada horário (`true` ou `false`).
+
+Recebemos a data via query params no formato Unix timestamp e guardamos na constante `searchDate`. Procuramos por todos os agendamentos disponíveis para a data informada e guardamos na constante `appointments`. Definimos todos os horários disponíveis no Array `schedule`. E, formatamos cada item do Array `schedule`, guardando o resultado no Array `available`. 
+
+Para verificar a disponibilidade de cada horário, verificamos se cada horário está depois do momento atual e comparamos com os itens do Array `appointments`, conferindo se já não existe alguém agendado para o horário verificado.
+
+Por fim, retornamos as informações obtidas para o cliente via JSON.
+
+No arquivo `src/routes.js`, criamos a rota `/providers/:providerId/available` e definimos no middleware o método `AvailableController.index`.
+
+No Insomnia, criamos a rota, incluímos o token e enviamos a data via Query params para realização dos testes.
+
+---
