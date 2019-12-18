@@ -996,3 +996,25 @@ yarn add youch
 Testes realizados via Insomnia.
 
 ---
+
+## Configurando variáveis de ambiente em desenvolvimento
+
+As variáveis de ambiente são variáveis que podem ter valores diferentes dependendo do ambiente onde a aplicação está sendo executada (produção / máquinas diferentes em desenvolvimento, etc). Um exemplo são os valores de autenticação no banco de dados que mudam de acordo com o ambiente.
+
+Módulo `dotenv` adicionado na aplicação para que as variáveis de ambiente funcionem. Esse módulo adiciona as variáveis de ambiente dentro da variável global do node `process.env`:
+```
+yarn add dotenv
+```
+Importamos o `dotenv/config` no arquivo `app.js` e no arquivo `queue.js`, pois os mesmos são executados em em processos separados. Também importamos no arquivo `config/database.js`.
+
+Criamos o arquivo `.env` na raiz da aplicação e configuramos o `.gitignore` para ignorá-lo. No arquivo criado, copiamos os valores de configuração definidos ao longo do desenvolvimento da aplicação.
+
+Nos arquivos de onde copiamos os valores, substituímos os valores copiados pelas variáveis de ambiente criadas. Substituímos grande parte dos valores nos arquivos dentro da pasta `config`.
+
+Utilizamos a variável `APP_URL` no arquivo model `File`. No `app.js` utilizamos a variável `NODE_ENV` para responder os possíveis erros com os detalhes apenas no ambiente de desenvolvimento. No arquivo `database/index.js` utilizamos a variável `MONGO_URL`.
+
+Seguindo uma boa pratica, criamos o arquivo `.env.example`, que semelhante ao `.env`, contudo, sem os dados sensíveis.
+
+Testes realizados via Insominia, listei os agendamentos, criei um agendamento e deletei um agendamento.
+
+---

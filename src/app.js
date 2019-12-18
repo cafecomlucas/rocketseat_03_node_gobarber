@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 import express from 'express';
 import 'express-async-errors';
 import Youch from 'youch';
@@ -55,8 +57,13 @@ class App {
   // retorna uma resposta no formato Json em caso de erro
   exceptionHandler() {
     this.server.use(async (err, req, res, next) => {
-      const errors = await new Youch(err, req).toJSON();
-      return res.status(500).json(errors);
+      // responde com os erros apenas em desenvolvimento pois pode conter dados sensíveis
+      if (process.env.NODE_ENV === 'development') {
+        const errors = await new Youch(err, req).toJSON();
+        return res.status(500).json(errors);
+      }
+      // em ambiente de produção, apenas retorna uma mensagem pro usuário
+      return res.status(500).json({ error: 'Internal Server Error' });
     });
   }
 }
