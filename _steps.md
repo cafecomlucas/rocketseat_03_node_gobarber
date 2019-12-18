@@ -963,3 +963,36 @@ No model `Appointment` adicionamos o campo `cancelable`, booleano, para indicar 
 Testes realizados via Insomnia.
 
 ---
+
+## Adicionando tratamento de exceções na aplicação
+
+Como podem ocorrer erros nas filas ou nos banco de dados a qualquer momento, é interessante configurar uma ferramenta de monitoramento, como o `Sentry` ou o `Bugsnag`. Nessa aplicação optamos por utilizar o Sentry por funcionar muito bem com o node.
+
+O Sentry pode ser integrado com o Slack e/ou e-mail e com o Github (inclusive criando uma issue por erro). O Sentry é pra ser utilizado em ambiente de produção, contudo, por enquanto utilizamos o ambiente de desenvolvimento para configura-lo e testa-lo. 
+
+No site do Sentry, após logar, criamos um novo projeto, escolhemos a tecnologia Express e nomeamos para GoBarber.
+
+Adicionamos o módulo ao projeto:
+```
+yarn add @sentry/node@5.10.2
+```
+
+Seguindo a documentação do Sentry, após a configuração (no arquivo `config/sentry`) e inicialização deste módulo (no `app.js`), colamos alguns trechos de código antes dos middlewares e após as rotas da aplicação.
+
+Instalamos o módulo `express-async-errors` para que o Sentry consiga lidar com os erros ocorridos em funções assíncronas. Importamos o módulo para o `app.js` (precisa estar após a importação do express e antes da importação das rotas para funcionar).
+
+```
+yarn dev express-async-errors
+```
+
+Renomeamos um método do arquivo `AppointmentController` para gerar um erro e no site do Sentry foi possível verificar todos os detalhes do erro disparado. Também é possível adicionar mais informações (como e-mail, id, etc).
+
+Criamos o método `exceptionHandler` após a execução do método `routes`. Esse método é responsável por disparar uma resposta ao cliente depois que ocorre o erro para não travar o fluxo da aplicação. Para formatar o erro utilizamos o módulo `youch`.
+
+```
+yarn add youch
+```
+
+Testes realizados via Insomnia.
+
+---

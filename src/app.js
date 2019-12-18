@@ -1,6 +1,11 @@
 import express from 'express';
+import 'express-async-errors';
+import Youch from 'youch';
 import { resolve } from 'path';
+// necessário importar com o * pois o Sentry não tem o export default
+import * as Sentry from '@sentry/node';
 import routes from './routes';
+import sentryConfig from './config/sentry';
 
 // conecta a base de dados
 import './database';
@@ -16,13 +21,20 @@ class App {
     // cria uma instância do express
     this.server = express();
 
+    // Inicializa o monitoramento dos possíveis erros
+    Sentry.init(sentryConfig);
+
     // configura os middleares e as rotas
     this.middlewares();
     this.routes();
+    this.exceptionHandler();
   }
 
   // método com a configuração de todos os middlewares
   middlewares() {
+    // adiciona o monitoramento de erros antes da execução de qualquer middleware
+    this.server.use(Sentry.Handlers.requestHandler());
+
     // middleware para receber requisições no formato JSON
     this.server.use(express.json());
     // Define rota de acesso aos arquivos estáticos (avatares dos usuários)
@@ -35,6 +47,17 @@ class App {
   // método com a configuração de todas as rotas
   routes() {
     this.server.use(routes);
+
+    // manipula os possíveis erros disparados
+    this.server.use(Sentry.Handlers.errorHandler());
+  }
+
+  // retorna uma resposta no formato Json em caso de erro
+  exceptionHandler() {
+    this.server.use(async (err, req, res, next) => {
+      const errors = await new Youch(err, req).toJSON();
+      return res.status(500).json(errors);
+    });
   }
 }
 
