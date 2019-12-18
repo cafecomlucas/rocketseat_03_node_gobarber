@@ -29,7 +29,7 @@ class AppointmentController {
       // então a conta abaixo pula registros anteriores
       // dependendo da página informada
       offset: (page - 1) * 20,
-      attributes: ['id', 'date'],
+      attributes: ['id', 'date', 'past', 'cancelable'],
       // No Agendamento, através do relacionamento,
       // inclui na busca os dados do Prestador (User)
       include: {

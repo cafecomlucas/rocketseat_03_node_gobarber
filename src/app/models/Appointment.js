@@ -1,4 +1,5 @@
 import Sequelize, { Model } from 'sequelize';
+import { isBefore, subHours } from 'date-fns';
 
 // cria a classe Appointment como filha da classe Model
 class Appointment extends Model {
@@ -12,6 +13,22 @@ class Appointment extends Model {
         canceled_at: Sequelize.DATE,
         // Aqui não são necessários os campos do relacionamento
         // pois serão criados abaixo através do método associate
+
+        // campos virtuais utilizados pelo cliente
+        // indica se a data é antiga
+        past: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return isBefore(this.date, new Date());
+          },
+        },
+        // indica se é possível cancelar o agendamento
+        cancelable: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return isBefore(new Date(), subHours(this.date, 2));
+          },
+        },
       },
       {
         // necessário informar o objeto de conexão do sequelize

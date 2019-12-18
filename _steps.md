@@ -953,3 +953,13 @@ No arquivo `src/routes.js`, criamos a rota `/providers/:providerId/available` e 
 No Insomnia, criamos a rota, incluímos o token e enviamos a data via Query params para realização dos testes.
 
 ---
+
+## Adicionando campos virtuais em cada agendamento para exibição no cliente Front-End
+
+No model `Appointment` adicionamos o campo `past`, booleano, para indicar se a data do respectivo agendamento já passou. Utilizamos o método `isBefore` do módulo `date-fns` para verificar se a data é antiga. Também alteramos o `AppointmentController` para incluir o campo `past` no retorno da consulta.
+
+No model `Appointment` adicionamos o campo `cancelable`, booleano, para indicar se a ainda é possível cancelar o agendamento (não é cancelavel se estiver a menos de duas horas do horário marcado). Utilizamos os métodos `isBefore` e `subHours` do módulo `date-fns` para fazer a verificação. Também alteramos o `AppointmentController` para incluir o campo `cancelable` no retorno da consulta.
+
+Testes realizados via Insomnia.
+
+---
